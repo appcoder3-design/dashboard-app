@@ -18,6 +18,14 @@ type SymbolData = {
   open: number;
   high: number;
   low: number;
+  earnings: {
+    quarter: string;
+    epsActual: number;
+    epsEstimate: number;
+    revenueActualB: number;
+    revenueEstimateB: number;
+    guidance: string;
+  };
   candles: CandlePoint[];
 };
 
@@ -30,6 +38,14 @@ const dashboardData: Record<string, SymbolData> = {
     open: 190.11,
     high: 193.04,
     low: 189.67,
+    earnings: {
+      quarter: "Q1 2026",
+      epsActual: 1.64,
+      epsEstimate: 1.58,
+      revenueActualB: 93.7,
+      revenueEstimateB: 91.2,
+      guidance: "Guidance raised for services growth.",
+    },
     candles: [
       { label: "D1", open: 188, high: 190, low: 187, close: 189.5 },
       { label: "D2", open: 189.5, high: 191, low: 188.7, close: 190.8 },
@@ -51,6 +67,14 @@ const dashboardData: Record<string, SymbolData> = {
     open: 874.53,
     high: 899.4,
     low: 870.62,
+    earnings: {
+      quarter: "Q1 2026",
+      epsActual: 6.21,
+      epsEstimate: 5.75,
+      revenueActualB: 27.4,
+      revenueEstimateB: 26.1,
+      guidance: "Datacenter demand remains strong.",
+    },
     candles: [
       { label: "D1", open: 845, high: 860, low: 838, close: 856 },
       { label: "D2", open: 856, high: 872, low: 851, close: 868 },
@@ -72,6 +96,14 @@ const dashboardData: Record<string, SymbolData> = {
     open: 175.05,
     high: 176.72,
     low: 171.61,
+    earnings: {
+      quarter: "Q1 2026",
+      epsActual: 0.57,
+      epsEstimate: 0.61,
+      revenueActualB: 22.8,
+      revenueEstimateB: 23.2,
+      guidance: "Auto margin pressure expected next quarter.",
+    },
     candles: [
       { label: "D1", open: 182, high: 183, low: 178, close: 179 },
       { label: "D2", open: 179, high: 180.5, low: 176.8, close: 177.1 },
@@ -93,6 +125,14 @@ const dashboardData: Record<string, SymbolData> = {
     open: 406.15,
     high: 409.22,
     low: 404.97,
+    earnings: {
+      quarter: "Q1 2026",
+      epsActual: 2.96,
+      epsEstimate: 2.82,
+      revenueActualB: 64.8,
+      revenueEstimateB: 63.5,
+      guidance: "Cloud revenue outlook above consensus.",
+    },
     candles: [
       { label: "D1", open: 392, high: 396, low: 390, close: 395 },
       { label: "D2", open: 395, high: 398, low: 393, close: 397.2 },
@@ -158,6 +198,14 @@ function buildFallbackData(symbol: string): SymbolData {
     open: Number(open.toFixed(2)),
     high: Number(high.toFixed(2)),
     low: Number(low.toFixed(2)),
+    earnings: {
+      quarter: "Q1 2026",
+      epsActual: Number((1.2 + (seed % 30) / 20).toFixed(2)),
+      epsEstimate: Number((1.1 + (seed % 30) / 22).toFixed(2)),
+      revenueActualB: Number((10 + (seed % 120) / 4).toFixed(2)),
+      revenueEstimateB: Number((9.5 + (seed % 120) / 4.2).toFixed(2)),
+      guidance: "Outlook stable with balanced demand trends.",
+    },
     candles,
   };
 }
@@ -276,67 +324,125 @@ export default function Home() {
           </div>
         </header>
 
-        <section className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-          <article
-            className={`rounded-xl border p-4 ${
-              isDarkMode ? "border-slate-800 bg-slate-950/70" : "border-slate-200 bg-slate-50"
-            }`}
-          >
-            <p
-              className={`text-xs uppercase tracking-wide ${
-                isDarkMode ? "text-slate-400" : "text-slate-500"
+        <section
+          className={`rounded-xl border p-4 ${
+            isDarkMode ? "border-slate-800 bg-slate-950/70" : "border-slate-200 bg-slate-50"
+          }`}
+        >
+          <h2 className="text-lg font-semibold">Last Trading Day Information</h2>
+          <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+            <article
+              className={`rounded-lg border p-3 ${
+                isDarkMode ? "border-slate-800 bg-slate-900/70" : "border-slate-200 bg-white"
               }`}
             >
-              Volume
-            </p>
-            <p className="mt-1 text-xl font-semibold">{data.volume}</p>
-          </article>
-          <article
-            className={`rounded-xl border p-4 ${
-              isDarkMode ? "border-slate-800 bg-slate-950/70" : "border-slate-200 bg-slate-50"
-            }`}
-          >
-            <p
-              className={`text-xs uppercase tracking-wide ${
-                isDarkMode ? "text-slate-400" : "text-slate-500"
+              <p className={`text-xs uppercase ${isDarkMode ? "text-slate-400" : "text-slate-500"}`}>
+                Open
+              </p>
+              <p className="mt-1 text-lg font-semibold">${numberFormat.format(data.open)}</p>
+            </article>
+            <article
+              className={`rounded-lg border p-3 ${
+                isDarkMode ? "border-slate-800 bg-slate-900/70" : "border-slate-200 bg-white"
               }`}
             >
-              Open
-            </p>
-            <p className="mt-1 text-xl font-semibold">${numberFormat.format(data.open)}</p>
-          </article>
-          <article
-            className={`rounded-xl border p-4 ${
-              isDarkMode ? "border-slate-800 bg-slate-950/70" : "border-slate-200 bg-slate-50"
-            }`}
-          >
-            <p
-              className={`text-xs uppercase tracking-wide ${
-                isDarkMode ? "text-slate-400" : "text-slate-500"
+              <p className={`text-xs uppercase ${isDarkMode ? "text-slate-400" : "text-slate-500"}`}>
+                Close
+              </p>
+              <p className="mt-1 text-lg font-semibold">${numberFormat.format(data.marketValue)}</p>
+            </article>
+            <article
+              className={`rounded-lg border p-3 ${
+                isDarkMode ? "border-slate-800 bg-slate-900/70" : "border-slate-200 bg-white"
               }`}
             >
-              High
-            </p>
-            <p className="mt-1 text-xl font-semibold text-emerald-400">
-              ${numberFormat.format(data.high)}
-            </p>
-          </article>
-          <article
-            className={`rounded-xl border p-4 ${
-              isDarkMode ? "border-slate-800 bg-slate-950/70" : "border-slate-200 bg-slate-50"
-            }`}
-          >
-            <p
-              className={`text-xs uppercase tracking-wide ${
-                isDarkMode ? "text-slate-400" : "text-slate-500"
+              <p className={`text-xs uppercase ${isDarkMode ? "text-slate-400" : "text-slate-500"}`}>
+                High
+              </p>
+              <p className="mt-1 text-lg font-semibold text-emerald-400">
+                ${numberFormat.format(data.high)}
+              </p>
+            </article>
+            <article
+              className={`rounded-lg border p-3 ${
+                isDarkMode ? "border-slate-800 bg-slate-900/70" : "border-slate-200 bg-white"
               }`}
             >
-              Low
-            </p>
-            <p className="mt-1 text-xl font-semibold text-rose-400">
-              ${numberFormat.format(data.low)}
-            </p>
-          </article>
+              <p className={`text-xs uppercase ${isDarkMode ? "text-slate-400" : "text-slate-500"}`}>
+                Low
+              </p>
+              <p className="mt-1 text-lg font-semibold text-rose-400">
+                ${numberFormat.format(data.low)}
+              </p>
+            </article>
+            <article
+              className={`rounded-lg border p-3 ${
+                isDarkMode ? "border-slate-800 bg-slate-900/70" : "border-slate-200 bg-white"
+              }`}
+            >
+              <p className={`text-xs uppercase ${isDarkMode ? "text-slate-400" : "text-slate-500"}`}>
+                Volume
+              </p>
+              <p className="mt-1 text-lg font-semibold">{data.volume}</p>
+            </article>
+          </div>
+        </section>
+
+        <section
+          className={`rounded-xl border p-4 ${
+            isDarkMode ? "border-slate-800 bg-slate-950/70" : "border-slate-200 bg-slate-50"
+          }`}
+        >
+          <h2 className="text-lg font-semibold">Last Earning Highlights</h2>
+          <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            <article
+              className={`rounded-lg border p-3 ${
+                isDarkMode ? "border-slate-800 bg-slate-900/70" : "border-slate-200 bg-white"
+              }`}
+            >
+              <p className={`text-xs uppercase ${isDarkMode ? "text-slate-400" : "text-slate-500"}`}>
+                Quarter
+              </p>
+              <p className="mt-1 text-lg font-semibold">{data.earnings.quarter}</p>
+            </article>
+            <article
+              className={`rounded-lg border p-3 ${
+                isDarkMode ? "border-slate-800 bg-slate-900/70" : "border-slate-200 bg-white"
+              }`}
+            >
+              <p className={`text-xs uppercase ${isDarkMode ? "text-slate-400" : "text-slate-500"}`}>
+                EPS (Actual vs Est)
+              </p>
+              <p className="mt-1 text-lg font-semibold">
+                {numberFormat.format(data.earnings.epsActual)} vs {numberFormat.format(data.earnings.epsEstimate)}
+              </p>
+            </article>
+            <article
+              className={`rounded-lg border p-3 ${
+                isDarkMode ? "border-slate-800 bg-slate-900/70" : "border-slate-200 bg-white"
+              }`}
+            >
+              <p className={`text-xs uppercase ${isDarkMode ? "text-slate-400" : "text-slate-500"}`}>
+                Revenue (Actual vs Est)
+              </p>
+              <p className="mt-1 text-lg font-semibold">
+                ${numberFormat.format(data.earnings.revenueActualB)}B vs $
+                {numberFormat.format(data.earnings.revenueEstimateB)}B
+              </p>
+            </article>
+            <article
+              className={`rounded-lg border p-3 ${
+                isDarkMode ? "border-slate-800 bg-slate-900/70" : "border-slate-200 bg-white"
+              }`}
+            >
+              <p className={`text-xs uppercase ${isDarkMode ? "text-slate-400" : "text-slate-500"}`}>
+                Guidance
+              </p>
+              <p className={`mt-1 text-sm ${isDarkMode ? "text-slate-300" : "text-slate-700"}`}>
+                {data.earnings.guidance}
+              </p>
+            </article>
+          </div>
         </section>
 
         <section
