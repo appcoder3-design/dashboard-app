@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { Plus, Trash2, Bell } from "lucide-react";
 
 interface WatchlistItem {
   symbol: string;
@@ -104,7 +103,7 @@ export default function Watchlist() {
                 onClick={addToWatchlist}
                 className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700"
               >
-                <Plus className="h-4 w-4" />
+                Add
               </button>
             </div>
           </div>
@@ -130,7 +129,7 @@ export default function Watchlist() {
                         onClick={() => removeFromWatchlist(item.symbol)}
                         className="text-red-600 hover:text-red-800"
                       >
-                        <Trash2 className="h-4 w-4" />
+                        Remove
                       </button>
                     </td>
                   </tr>
