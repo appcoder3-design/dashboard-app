@@ -131,6 +131,7 @@ const dashboardData: Record<string, SymbolData> = {
 
 export default function Home() {
   const [selectedSymbol, setSelectedSymbol] = useState("AAPL");
+  const [isDarkMode, setIsDarkMode] = useState(true);
   const data = dashboardData[selectedSymbol];
 
   const polyline = useMemo(
@@ -142,24 +143,54 @@ export default function Home() {
   );
 
   return (
-    <div className="min-h-screen bg-slate-950 px-4 py-8 text-slate-100">
-      <main className="mx-auto flex w-full max-w-6xl flex-col gap-6 rounded-2xl border border-slate-800 bg-slate-900 p-6 shadow-2xl shadow-slate-950/60">
-        <header className="flex flex-col gap-2 border-b border-slate-800 pb-4 sm:flex-row sm:items-end sm:justify-between">
+    <div
+      className={`min-h-screen px-4 py-8 ${
+        isDarkMode ? "bg-slate-950 text-slate-100" : "bg-slate-100 text-slate-900"
+      }`}
+    >
+      <main
+        className={`mx-auto flex w-full max-w-6xl flex-col gap-6 rounded-2xl border p-6 shadow-2xl ${
+          isDarkMode
+            ? "border-slate-800 bg-slate-900 shadow-slate-950/60"
+            : "border-slate-200 bg-white shadow-slate-300/50"
+        }`}
+      >
+        <header
+          className={`flex flex-col gap-2 border-b pb-4 sm:flex-row sm:items-end sm:justify-between ${
+            isDarkMode ? "border-slate-800" : "border-slate-200"
+          }`}
+        >
           <div>
-            <p className="text-xs uppercase tracking-[0.28em] text-slate-400">
+            <p
+              className={`text-xs uppercase tracking-[0.28em] ${
+                isDarkMode ? "text-slate-400" : "text-slate-500"
+              }`}
+            >
               Live Market Dashboard
             </p>
             <div className="mt-2 flex flex-wrap items-center gap-3">
               <h1 className="text-2xl font-semibold tracking-tight">
                 {selectedSymbol}
               </h1>
-              <span className="text-sm text-slate-400">{data.marketLabel}</span>
-              <label className="ml-0 text-xs text-slate-400 sm:ml-4">
+              <span
+                className={`text-sm ${isDarkMode ? "text-slate-400" : "text-slate-500"}`}
+              >
+                {data.marketLabel}
+              </span>
+              <label
+                className={`ml-0 text-xs sm:ml-4 ${
+                  isDarkMode ? "text-slate-400" : "text-slate-500"
+                }`}
+              >
                 Symbol
                 <select
                   value={selectedSymbol}
                   onChange={(event) => setSelectedSymbol(event.target.value)}
-                  className="ml-2 rounded-md border border-slate-700 bg-slate-950 px-2 py-1 text-sm text-slate-100 outline-none ring-emerald-400 focus:ring-1"
+                  className={`ml-2 rounded-md border px-2 py-1 text-sm outline-none ring-emerald-400 focus:ring-1 ${
+                    isDarkMode
+                      ? "border-slate-700 bg-slate-950 text-slate-100"
+                      : "border-slate-300 bg-white text-slate-900"
+                  }`}
                   aria-label="Choose stock symbol"
                 >
                   {Object.keys(dashboardData).map((symbol) => (
@@ -169,6 +200,17 @@ export default function Home() {
                   ))}
                 </select>
               </label>
+              <button
+                type="button"
+                onClick={() => setIsDarkMode((current) => !current)}
+                className={`ml-0 rounded-md border px-3 py-1 text-xs font-medium sm:ml-2 ${
+                  isDarkMode
+                    ? "border-slate-700 bg-slate-950 text-slate-200"
+                    : "border-slate-300 bg-slate-100 text-slate-700"
+                }`}
+              >
+                {isDarkMode ? "Light Mode" : "Dark Mode"}
+              </button>
             </div>
           </div>
           <div className="text-right">
@@ -188,28 +230,60 @@ export default function Home() {
         </header>
 
         <section className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-          <article className="rounded-xl border border-slate-800 bg-slate-950/70 p-4">
-            <p className="text-xs uppercase tracking-wide text-slate-400">
+          <article
+            className={`rounded-xl border p-4 ${
+              isDarkMode ? "border-slate-800 bg-slate-950/70" : "border-slate-200 bg-slate-50"
+            }`}
+          >
+            <p
+              className={`text-xs uppercase tracking-wide ${
+                isDarkMode ? "text-slate-400" : "text-slate-500"
+              }`}
+            >
               Volume
             </p>
             <p className="mt-1 text-xl font-semibold">{data.volume}</p>
           </article>
-          <article className="rounded-xl border border-slate-800 bg-slate-950/70 p-4">
-            <p className="text-xs uppercase tracking-wide text-slate-400">
+          <article
+            className={`rounded-xl border p-4 ${
+              isDarkMode ? "border-slate-800 bg-slate-950/70" : "border-slate-200 bg-slate-50"
+            }`}
+          >
+            <p
+              className={`text-xs uppercase tracking-wide ${
+                isDarkMode ? "text-slate-400" : "text-slate-500"
+              }`}
+            >
               Open
             </p>
             <p className="mt-1 text-xl font-semibold">${data.open}</p>
           </article>
-          <article className="rounded-xl border border-slate-800 bg-slate-950/70 p-4">
-            <p className="text-xs uppercase tracking-wide text-slate-400">
+          <article
+            className={`rounded-xl border p-4 ${
+              isDarkMode ? "border-slate-800 bg-slate-950/70" : "border-slate-200 bg-slate-50"
+            }`}
+          >
+            <p
+              className={`text-xs uppercase tracking-wide ${
+                isDarkMode ? "text-slate-400" : "text-slate-500"
+              }`}
+            >
               High
             </p>
             <p className="mt-1 text-xl font-semibold text-emerald-400">
               ${data.high}
             </p>
           </article>
-          <article className="rounded-xl border border-slate-800 bg-slate-950/70 p-4">
-            <p className="text-xs uppercase tracking-wide text-slate-400">
+          <article
+            className={`rounded-xl border p-4 ${
+              isDarkMode ? "border-slate-800 bg-slate-950/70" : "border-slate-200 bg-slate-50"
+            }`}
+          >
+            <p
+              className={`text-xs uppercase tracking-wide ${
+                isDarkMode ? "text-slate-400" : "text-slate-500"
+              }`}
+            >
               Low
             </p>
             <p className="mt-1 text-xl font-semibold text-rose-400">
@@ -218,16 +292,28 @@ export default function Home() {
           </article>
         </section>
 
-        <section className="rounded-xl border border-slate-800 bg-slate-950/70 p-4">
+        <section
+          className={`rounded-xl border p-4 ${
+            isDarkMode ? "border-slate-800 bg-slate-950/70" : "border-slate-200 bg-slate-50"
+          }`}
+        >
           <div className="mb-3 flex items-center justify-between">
             <h2 className="text-lg font-semibold">Price Action (7D)</h2>
-            <span className="rounded-full border border-slate-700 px-3 py-1 text-xs text-slate-300">
+            <span
+              className={`rounded-full border px-3 py-1 text-xs ${
+                isDarkMode
+                  ? "border-slate-700 text-slate-300"
+                  : "border-slate-300 text-slate-600"
+              }`}
+            >
               Candles + Trend
             </span>
           </div>
           <svg
             viewBox="0 0 540 220"
-            className="h-64 w-full rounded-lg border border-slate-800 bg-slate-950"
+            className={`h-64 w-full rounded-lg border ${
+              isDarkMode ? "border-slate-800 bg-slate-950" : "border-slate-200 bg-white"
+            }`}
             role="img"
             aria-label="Stock chart trend line"
           >
@@ -238,7 +324,7 @@ export default function Home() {
                 y1={line}
                 x2="540"
                 y2={line}
-                stroke="#1f2937"
+                stroke={isDarkMode ? "#1f2937" : "#cbd5e1"}
                 strokeWidth="1"
               />
             ))}
@@ -249,7 +335,7 @@ export default function Home() {
                   y1={195}
                   x2={index * 90}
                   y2={30}
-                  stroke="#1e293b"
+                  stroke={isDarkMode ? "#1e293b" : "#d1d5db"}
                   strokeWidth="1"
                 />
                 <rect
@@ -270,24 +356,38 @@ export default function Home() {
               points={polyline}
             />
           </svg>
-          <div className="mt-2 grid grid-cols-7 text-center text-xs text-slate-400">
+          <div
+            className={`mt-2 grid grid-cols-7 text-center text-xs ${
+              isDarkMode ? "text-slate-400" : "text-slate-500"
+            }`}
+          >
             {data.chartPoints.map((point) => (
               <span key={point.day}>{point.day}</span>
             ))}
           </div>
         </section>
 
-        <section className="rounded-xl border border-slate-800 bg-slate-950/70 p-4">
+        <section
+          className={`rounded-xl border p-4 ${
+            isDarkMode ? "border-slate-800 bg-slate-950/70" : "border-slate-200 bg-slate-50"
+          }`}
+        >
           <div className="mb-3 flex items-center justify-between">
             <h2 className="text-lg font-semibold">Positions</h2>
-            <span className="text-xs text-slate-400">
+            <span className={`text-xs ${isDarkMode ? "text-slate-400" : "text-slate-500"}`}>
               Snapshot as of market close
             </span>
           </div>
           <div className="overflow-x-auto">
             <table className="w-full min-w-[520px] border-collapse text-sm">
               <thead>
-                <tr className="border-b border-slate-800 text-left text-xs uppercase tracking-wider text-slate-400">
+                <tr
+                  className={`border-b text-left text-xs uppercase tracking-wider ${
+                    isDarkMode
+                      ? "border-slate-800 text-slate-400"
+                      : "border-slate-200 text-slate-500"
+                  }`}
+                >
                   <th className="py-2 pr-2">Symbol</th>
                   <th className="py-2 pr-2">Company</th>
                   <th className="py-2 pr-2">Last Price</th>
@@ -300,10 +400,14 @@ export default function Home() {
                   return (
                     <tr
                       key={position.symbol}
-                      className="border-b border-slate-800/70 last:border-b-0"
+                      className={`border-b last:border-b-0 ${
+                        isDarkMode ? "border-slate-800/70" : "border-slate-200"
+                      }`}
                     >
                       <td className="py-3 pr-2 font-semibold">{position.symbol}</td>
-                      <td className="py-3 pr-2 text-slate-300">{position.company}</td>
+                      <td className={`py-3 pr-2 ${isDarkMode ? "text-slate-300" : "text-slate-600"}`}>
+                        {position.company}
+                      </td>
                       <td className="py-3 pr-2">{position.last}</td>
                       <td
                         className={`py-3 font-medium ${
