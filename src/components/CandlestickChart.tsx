@@ -33,9 +33,7 @@ export default function CandlestickChart({ candles, isDarkMode }: CandlestickCha
   return (
     <svg
       viewBox="0 0 640 300"
-      className={`h-64 w-full rounded-lg border ${
-        isDarkMode ? "border-slate-800 bg-slate-950" : "border-slate-200 bg-white"
-      }`}
+      className="h-64 w-full rounded-lg border border-gray-200 bg-white p-4"
       role="img"
       aria-label="Stock candlestick chart with axes"
     >
@@ -48,7 +46,7 @@ export default function CandlestickChart({ candles, isDarkMode }: CandlestickCha
               y1={y}
               x2="620"
               y2={y}
-              stroke={isDarkMode ? "#1f2937" : "#cbd5e1"}
+              stroke="#e5e7eb"
               strokeWidth="1"
             />
             <text
@@ -56,7 +54,7 @@ export default function CandlestickChart({ candles, isDarkMode }: CandlestickCha
               y={y + 4}
               textAnchor="end"
               fontSize="10"
-              fill={isDarkMode ? "#94a3b8" : "#64748b"}
+              fill="#6b7280"
             >
               {chartMeta.yTicks[tickIndex].toFixed(2)}
             </text>
@@ -68,7 +66,7 @@ export default function CandlestickChart({ candles, isDarkMode }: CandlestickCha
         y1="230"
         x2="620"
         y2="230"
-        stroke={isDarkMode ? "#334155" : "#94a3b8"}
+        stroke="#374151"
         strokeWidth="1.5"
       />
       <line
@@ -76,7 +74,7 @@ export default function CandlestickChart({ candles, isDarkMode }: CandlestickCha
         y1="30"
         x2="60"
         y2="230"
-        stroke={isDarkMode ? "#334155" : "#94a3b8"}
+        stroke="#374151"
         strokeWidth="1.5"
       />
       {candles.map((candle, index) => {
@@ -98,7 +96,7 @@ export default function CandlestickChart({ candles, isDarkMode }: CandlestickCha
               y1={yHigh}
               x2={x}
               y2={yLow}
-              stroke={isDarkMode ? "#94a3b8" : "#64748b"}
+              stroke="#6b7280"
               strokeWidth="1.5"
             />
             <rect
@@ -107,15 +105,15 @@ export default function CandlestickChart({ candles, isDarkMode }: CandlestickCha
               width="18"
               height={bodyHeight}
               rx="2"
-              fill={isUp ? "#22c55e" : "#ef4444"}
-              opacity="0.85"
+              fill={isUp ? "#10b981" : "#ef4444"}
+              opacity="0.9"
             />
             <text
               x={x}
               y="248"
               textAnchor="middle"
               fontSize="10"
-              fill={isDarkMode ? "#94a3b8" : "#64748b"}
+              fill="#6b7280"
             >
               {candle.label}
             </text>
@@ -126,7 +124,7 @@ export default function CandlestickChart({ candles, isDarkMode }: CandlestickCha
         x="14"
         y="16"
         fontSize="10"
-        fill={isDarkMode ? "#94a3b8" : "#64748b"}
+        fill="#374151"
       >
         Price ($)
       </text>
@@ -134,7 +132,7 @@ export default function CandlestickChart({ candles, isDarkMode }: CandlestickCha
         x="600"
         y="272"
         fontSize="10"
-        fill={isDarkMode ? "#94a3b8" : "#64748b"}
+        fill="#374151"
       >
         Time
       </text>

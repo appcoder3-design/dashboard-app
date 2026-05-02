@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 import { useRealTimeData } from "../hooks/useRealTimeData";
@@ -40,195 +40,194 @@ export default function Home() {
   };
 
   return (
-    <div
-      className={`min-h-screen px-4 py-8 ${
-        isDarkMode ? "bg-slate-950 text-slate-100" : "bg-slate-100 text-slate-900"
-      }`}
-    >
-      <div className="max-w-7xl mx-auto">
-        <Tabs selectedIndex={activeTab} onSelect={setActiveTab}>
-          <TabList className="flex space-x-1 mb-6">
-            <Tab className="px-4 py-2 bg-slate-200 dark:bg-slate-800 rounded-t-md cursor-pointer">Stocks</Tab>
-            <Tab className="px-4 py-2 bg-slate-200 dark:bg-slate-800 rounded-t-md cursor-pointer">Portfolio</Tab>
-            <Tab className="px-4 py-2 bg-slate-200 dark:bg-slate-800 rounded-t-md cursor-pointer">Watchlist</Tab>
-          </TabList>
+    <div className={`min-h-screen px-4 py-8 ${isDarkMode ? "bg-slate-950 text-slate-100" : "bg-slate-100 text-slate-950"}`}>
+      <div className="mx-auto flex max-w-7xl flex-col gap-8">
+        <div className="rounded-[32px] border border-slate-800 bg-slate-950/90 p-6 shadow-2xl shadow-slate-950/20 backdrop-blur-xl">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm uppercase tracking-[0.35em] text-emerald-300/80">Market dashboard</p>
+              <h1 className="mt-3 text-4xl font-semibold tracking-tight">NewFinanceGuide</h1>
+              <p className="mt-2 max-w-2xl text-slate-400">Track the latest stock performance, compare key metrics, and explore portfolio health in one polished view.</p>
+            </div>
+            <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2 rounded-2xl border border-slate-700 bg-slate-900/80 px-4 py-2 text-sm text-slate-300">
+                <span>Symbol</span>
+                <input
+                  type="text"
+                  value={symbolInput}
+                  onChange={(event) => setSymbolInput(event.target.value.toUpperCase())}
+                  placeholder="AAPL"
+                  aria-label="Type stock symbol"
+                  className="w-24 rounded-xl border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-slate-100 outline-none transition focus:border-emerald-400 focus:ring-1 focus:ring-emerald-400"
+                />
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsDarkMode((current) => !current)}
+                className="rounded-2xl border border-slate-700 bg-slate-900/80 px-4 py-2 text-sm font-medium text-slate-100 transition hover:border-emerald-400 hover:bg-slate-800"
+              >
+                {isDarkMode ? "Light Mode" : "Dark Mode"}
+              </button>
+            </div>
+          </div>
 
-          <TabPanel>
-            <div className="space-y-6">
-              <header className="flex flex-col gap-2 border-b pb-4 sm:flex-row sm:items-end sm:justify-between border-slate-800">
+          <div className="mt-8 grid gap-4 lg:grid-cols-[1fr_0.9fr]">
+            <div className="rounded-[28px] border border-slate-800 bg-slate-900/80 p-6 shadow-xl shadow-slate-950/10">
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <div>
-                  <p className="text-xs uppercase tracking-[0.28em] text-slate-400">
-                    Live Market Dashboard
-                  </p>
-                  <div className="mt-2 flex flex-wrap items-center gap-3">
-                    <h1 className="text-2xl font-semibold tracking-tight">
-                      {normalizedSymbol}
-                    </h1>
-                    <span className="text-sm text-slate-400">
-                      {displayData.marketLabel}
-                    </span>
-                    <label className="ml-0 text-xs sm:ml-4 text-slate-400">
-                      Symbol
-                      <input
-                        type="text"
-                        value={symbolInput}
-                        onChange={(event) => setSymbolInput(event.target.value.toUpperCase())}
-                        placeholder="Type symbol (e.g. AAPL)"
-                        className={`ml-2 rounded-md border px-2 py-1 text-sm outline-none ring-emerald-400 focus:ring-1 ${
-                          isDarkMode
-                            ? "border-slate-700 bg-slate-950 text-slate-100"
-                            : "border-slate-300 bg-white text-slate-900"
-                        }`}
-                        aria-label="Type stock symbol"
-                      />
-                    </label>
+                  <p className="text-sm uppercase tracking-[0.35em] text-slate-400">{normalizedSymbol} overview</p>
+                  <p className="mt-2 text-5xl font-semibold text-emerald-300">${numberFormat.format(displayData.marketValue)}</p>
+                </div>
+                <span className={`rounded-3xl px-4 py-2 text-sm font-semibold ${displayData.marketChange.startsWith("+") ? "bg-emerald-500/10 text-emerald-200" : "bg-rose-500/10 text-rose-200"}`}>
+                  {displayData.marketChange}
+                </span>
+              </div>
+
+              <div className="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+                <div className="rounded-3xl border border-slate-800 bg-slate-950/80 p-4">
+                  <p className="text-xs uppercase tracking-[0.28em] text-slate-500">Open</p>
+                  <p className="mt-2 text-xl font-semibold">${numberFormat.format(displayData.open)}</p>
+                </div>
+                <div className="rounded-3xl border border-slate-800 bg-slate-950/80 p-4">
+                  <p className="text-xs uppercase tracking-[0.28em] text-slate-500">High</p>
+                  <p className="mt-2 text-xl font-semibold text-emerald-300">${numberFormat.format(displayData.high)}</p>
+                </div>
+                <div className="rounded-3xl border border-slate-800 bg-slate-950/80 p-4">
+                  <p className="text-xs uppercase tracking-[0.28em] text-slate-500">Low</p>
+                  <p className="mt-2 text-xl font-semibold text-rose-300">${numberFormat.format(displayData.low)}</p>
+                </div>
+                <div className="rounded-3xl border border-slate-800 bg-slate-950/80 p-4">
+                  <p className="text-xs uppercase tracking-[0.28em] text-slate-500">Volume</p>
+                  <p className="mt-2 text-xl font-semibold">{displayData.volume}</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="rounded-[28px] border border-slate-800 bg-slate-900/80 p-6 shadow-xl shadow-slate-950/10">
+              <p className="text-sm uppercase tracking-[0.35em] text-slate-400">Trading pulse</p>
+              <div className="mt-6 rounded-[28px] border border-slate-800 bg-slate-950/80 p-4">
+                <CandlestickChart candles={displayData.candles} isDarkMode={isDarkMode} />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="grid gap-6 xl:grid-cols-[1.4fr_0.95fr]">
+          <section className="rounded-[32px] border border-slate-800 bg-slate-950/90 p-6 shadow-2xl shadow-slate-950/20">
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <h2 className="text-2xl font-semibold">Market details</h2>
+                <p className="mt-2 text-slate-400">Analyze price action, earnings, and the latest market trends.</p>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {periods.map((period) => {
+                  const isActive = selectedPeriod === period.id;
+                  return (
                     <button
+                      key={period.id}
                       type="button"
-                      onClick={() => setIsDarkMode((current) => !current)}
-                      className={`ml-0 rounded-md border px-3 py-1 text-xs font-medium sm:ml-2 ${
-                        isDarkMode
-                          ? "border-slate-700 bg-slate-950 text-slate-200"
-                          : "border-slate-300 bg-slate-100 text-slate-700"
+                      onClick={() => setSelectedPeriod(period.id)}
+                      className={`rounded-full border px-4 py-2 text-sm font-medium transition ${
+                        isActive
+                          ? "border-emerald-400 bg-emerald-500/15 text-emerald-200"
+                          : "border-slate-700 bg-slate-900/80 text-slate-300 hover:border-emerald-400 hover:text-white"
                       }`}
                     >
-                      {isDarkMode ? "Light Mode" : "Dark Mode"}
+                      {period.label}
                     </button>
-                  </div>
-                </div>
-                <div className="text-right">
-                  <p className="text-3xl font-bold text-emerald-400">
-                    ${numberFormat.format(displayData.marketValue)}
-                  </p>
-                  <p
-                    className={`text-sm ${
-                      displayData.marketChange.startsWith("+")
-                        ? "text-emerald-300"
-                        : "text-rose-300"
-                    }`}
-                  >
-                    {displayData.marketChange}
-                  </p>
-                </div>
-              </header>
-
-              <section className="rounded-xl border p-4 border-slate-800 bg-slate-950/70">
-                <h2 className="text-lg font-semibold">Last Trading Day Information</h2>
-                <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
-                  <article className="rounded-lg border p-3 border-slate-800 bg-slate-900/70">
-                    <p className="text-xs uppercase text-slate-400">Open</p>
-                    <p className="mt-1 text-lg font-semibold">${numberFormat.format(displayData.open)}</p>
-                  </article>
-                  <article className="rounded-lg border p-3 border-slate-800 bg-slate-900/70">
-                    <p className="text-xs uppercase text-slate-400">Close</p>
-                    <p className="mt-1 text-lg font-semibold">${numberFormat.format(displayData.marketValue)}</p>
-                  </article>
-                  <article className="rounded-lg border p-3 border-slate-800 bg-slate-900/70">
-                    <p className="text-xs uppercase text-slate-400">High</p>
-                    <p className="mt-1 text-lg font-semibold text-emerald-400">
-                      ${numberFormat.format(displayData.high)}
-                    </p>
-                  </article>
-                  <article className="rounded-lg border p-3 border-slate-800 bg-slate-900/70">
-                    <p className="text-xs uppercase text-slate-400">Low</p>
-                    <p className="mt-1 text-lg font-semibold text-rose-400">
-                      ${numberFormat.format(displayData.low)}
-                    </p>
-                  </article>
-                  <article className="rounded-lg border p-3 border-slate-800 bg-slate-900/70">
-                    <p className="text-xs uppercase text-slate-400">Volume</p>
-                    <p className="mt-1 text-lg font-semibold">{displayData.volume}</p>
-                  </article>
-                </div>
-              </section>
-
-              <section className="rounded-xl border p-4 border-slate-800 bg-slate-950/70">
-                <h2 className="text-lg font-semibold">Last Earning Highlights</h2>
-                <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-                  <article className="rounded-lg border p-3 border-slate-800 bg-slate-900/70">
-                    <p className="text-xs uppercase text-slate-400">Quarter</p>
-                    <p className="mt-1 text-lg font-semibold">{displayData.earnings.quarter}</p>
-                  </article>
-                  <article className="rounded-lg border p-3 border-slate-800 bg-slate-900/70">
-                    <p className="text-xs uppercase text-slate-400">EPS (Actual vs Est)</p>
-                    <p className="mt-1 text-lg font-semibold">
-                      {numberFormat.format(displayData.earnings.epsActual)} vs {numberFormat.format(displayData.earnings.epsEstimate)}
-                    </p>
-                  </article>
-                  <article className="rounded-lg border p-3 border-slate-800 bg-slate-900/70">
-                    <p className="text-xs uppercase text-slate-400">Revenue (Actual vs Est)</p>
-                    <p className="mt-1 text-lg font-semibold">
-                      ${numberFormat.format(displayData.earnings.revenueActualB)}B vs $
-                      {numberFormat.format(displayData.earnings.revenueEstimateB)}B
-                    </p>
-                  </article>
-                  <article className="rounded-lg border p-3 border-slate-800 bg-slate-900/70">
-                    <p className="text-xs uppercase text-slate-400">Guidance</p>
-                    <p className="mt-1 text-sm text-slate-300">
-                      {displayData.earnings.guidance}
-                    </p>
-                  </article>
-                </div>
-              </section>
-
-              <section className="rounded-xl border p-4 border-slate-800 bg-slate-950/70">
-                <div className="mb-3 flex items-center justify-between">
-                  <h2 className="text-lg font-semibold">Price Action (Candles)</h2>
-                  <div className="flex gap-2">
-                    {periods.map((period) => {
-                      const isActive = selectedPeriod === period.id;
-                      return (
-                        <button
-                          key={period.id}
-                          type="button"
-                          onClick={() => setSelectedPeriod(period.id)}
-                          className={`rounded-full border px-3 py-1 text-xs ${
-                            isDarkMode
-                              ? isActive
-                                ? "border-emerald-500 bg-emerald-500/10 text-emerald-300"
-                                : "border-slate-700 text-slate-300"
-                              : isActive
-                              ? "border-emerald-600 bg-emerald-50 text-emerald-700"
-                              : "border-slate-300 text-slate-600"
-                          }`}
-                        >
-                          {period.label}
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-                <CandlestickChart candles={displayData.candles} isDarkMode={isDarkMode} />
-                <div className="mt-2 text-xs text-slate-400">
-                  Candlestick chart shows open, high, low, and close with labeled axes.
-                </div>
-              </section>
-
-              <section className="rounded-xl border p-4 border-slate-800 bg-slate-950/70">
-                <h2 className="text-lg font-semibold mb-4">Price Trend</h2>
-                <PriceChart data={displayData.candles} />
-              </section>
-
-              <section className="rounded-xl border p-4 border-slate-800 bg-slate-950/70">
-                <h2 className="text-lg font-semibold mb-4">Financial Metrics</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <MetricsChart metrics={displayData.metrics} type="pe" />
-                  <MetricsChart metrics={displayData.metrics} type="roe" />
-                  <MetricsChart metrics={displayData.metrics} type="debtToEquity" />
-                  <MetricsChart metrics={displayData.metrics} type="revenue" />
-                  <MetricsChart metrics={displayData.metrics} type="eps" />
-                </div>
-              </section>
+                  );
+                })}
+              </div>
             </div>
-          </TabPanel>
 
-          <TabPanel>
-            <Portfolio />
-          </TabPanel>
+            <div className="mt-6 rounded-[28px] border border-slate-800 bg-slate-900/80 p-4">
+              <PriceChart data={displayData.candles} />
+            </div>
 
-          <TabPanel>
-            <Watchlist />
-          </TabPanel>
-        </Tabs>
+            <div className="mt-6 grid gap-4 sm:grid-cols-2">
+              <article className="rounded-3xl border border-slate-800 bg-slate-950/80 p-4">
+                <p className="text-xs uppercase tracking-[0.28em] text-slate-500">Estimated EPS</p>
+                <p className="mt-2 text-lg font-semibold text-white">{numberFormat.format(displayData.earnings.epsActual)} vs {numberFormat.format(displayData.earnings.epsEstimate)}</p>
+              </article>
+              <article className="rounded-3xl border border-slate-800 bg-slate-950/80 p-4">
+                <p className="text-xs uppercase tracking-[0.28em] text-slate-500">Revenue</p>
+                <p className="mt-2 text-lg font-semibold text-white">${numberFormat.format(displayData.earnings.revenueActualB)}B</p>
+              </article>
+            </div>
+          </section>
+
+          <aside className="space-y-6">
+            <section className="rounded-[32px] border border-slate-800 bg-slate-950/90 p-6 shadow-2xl shadow-slate-950/20">
+              <h3 className="text-xl font-semibold">Earnings summary</h3>
+              <div className="mt-5 grid gap-4 sm:grid-cols-2">
+                <div className="rounded-3xl bg-slate-900/80 p-4">
+                  <p className="text-xs uppercase tracking-[0.28em] text-slate-500">Quarter</p>
+                  <p className="mt-3 text-lg font-semibold text-white">{displayData.earnings.quarter}</p>
+                </div>
+                <div className="rounded-3xl bg-slate-900/80 p-4">
+                  <p className="text-xs uppercase tracking-[0.28em] text-slate-500">Guidance</p>
+                  <p className="mt-3 text-lg font-semibold text-white">{displayData.earnings.guidance}</p>
+                </div>
+              </div>
+            </section>
+
+            <section className="rounded-[32px] border border-slate-800 bg-slate-950/90 p-6 shadow-2xl shadow-slate-950/20">
+              <h3 className="text-xl font-semibold">Portfolio pulse</h3>
+              <p className="mt-2 text-slate-400">Manage positions and watchlist items with quick access tabs.</p>
+              <div className="mt-6 rounded-[28px] border border-slate-800 bg-slate-900/80 p-4">
+                <div className="space-y-3">
+                  <p className="text-xs uppercase tracking-[0.28em] text-slate-500">Market label</p>
+                  <p className="text-lg font-semibold text-white">{displayData.marketLabel}</p>
+                </div>
+                <div className="mt-4 space-y-3">
+                  <div className="flex items-center justify-between rounded-3xl bg-slate-950/80 p-4">
+                    <span className="text-sm text-slate-400">Market change</span>
+                    <span className={`text-sm font-semibold ${displayData.marketChange.startsWith("+") ? "text-emerald-300" : "text-rose-300"}`}>{displayData.marketChange}</span>
+                  </div>
+                  <div className="flex items-center justify-between rounded-3xl bg-slate-950/80 p-4">
+                    <span className="text-sm text-slate-400">Volume</span>
+                    <span className="text-sm font-semibold text-white">{displayData.volume}</span>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </aside>
+        </div>
+
+        <section className="rounded-[32px] border border-slate-800 bg-slate-950/90 p-6 shadow-2xl shadow-slate-950/20">
+          <h2 className="text-2xl font-semibold">Financial metrics</h2>
+          <p className="mt-2 text-slate-400">Fundamental analytics for the selected stock and timeframe.</p>
+          <div className="mt-6 grid gap-4 md:grid-cols-2">
+            <MetricsChart metrics={displayData.metrics} type="pe" />
+            <MetricsChart metrics={displayData.metrics} type="roe" />
+            <MetricsChart metrics={displayData.metrics} type="debtToEquity" />
+            <MetricsChart metrics={displayData.metrics} type="revenue" />
+            <MetricsChart metrics={displayData.metrics} type="eps" />
+          </div>
+        </section>
+
+        <section className="rounded-[32px] border border-slate-800 bg-slate-950/90 p-6 shadow-2xl shadow-slate-950/20">
+          <Tabs selectedIndex={activeTab} onSelect={setActiveTab}>
+            <TabList className="grid gap-2 sm:grid-cols-3 mb-4">
+              <Tab className="rounded-3xl border border-slate-800 bg-slate-900/80 px-5 py-3 text-sm font-semibold text-slate-300 transition hover:border-emerald-400 hover:text-white" selectedClassName="border-emerald-400 bg-emerald-500/10 text-emerald-200">Stocks</Tab>
+              <Tab className="rounded-3xl border border-slate-800 bg-slate-900/80 px-5 py-3 text-sm font-semibold text-slate-300 transition hover:border-emerald-400 hover:text-white" selectedClassName="border-emerald-400 bg-emerald-500/10 text-emerald-200">Portfolio</Tab>
+              <Tab className="rounded-3xl border border-slate-800 bg-slate-900/80 px-5 py-3 text-sm font-semibold text-slate-300 transition hover:border-emerald-400 hover:text-white" selectedClassName="border-emerald-400 bg-emerald-500/10 text-emerald-200">Watchlist</Tab>
+            </TabList>
+
+            <TabPanel>
+              <div className="rounded-[28px] border border-slate-800 bg-slate-900/80 p-6">
+                <h3 className="text-xl font-semibold">Stocks</h3>
+                <p className="mt-2 text-slate-400">A live view of stock performance and technical indicators.</p>
+              </div>
+            </TabPanel>
+            <TabPanel>
+              <Portfolio />
+            </TabPanel>
+            <TabPanel>
+              <Watchlist />
+            </TabPanel>
+          </Tabs>
+        </section>
       </div>
     </div>
   );
