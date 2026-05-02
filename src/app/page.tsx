@@ -1,14 +1,12 @@
 ﻿"use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
-import "react-tabs/style/react-tabs.css";
+import Link from "next/link";
 import { useRealTimeData } from "../hooks/useRealTimeData";
+import { generatePeriodCandles, hashSymbol } from "../data/stocks";
 import PriceChart from "../components/PriceChart";
 import MetricsChart from "../components/MetricsChart";
 import CandlestickChart from "../components/CandlestickChart";
-import Portfolio from "../components/Portfolio";
-import Watchlist from "../components/Watchlist";
 
 const supportedSymbols = ["AAPL", "MSFT", "NVDA", "QQQ"];
 
@@ -33,7 +31,6 @@ export default function Home() {
     return savedTheme === "dark";
   });
   const [selectedPeriod, setSelectedPeriod] = useState<PeriodId>("1W");
-  const [activeTab, setActiveTab] = useState(0);
 
   const normalizedSymbol = symbolInput.trim().toUpperCase() || "AAPL";
   const data = useRealTimeData(normalizedSymbol);
@@ -46,7 +43,12 @@ export default function Home() {
   }, [isDarkMode]);
 
   const pointsCount = periods.find((period) => period.id === selectedPeriod)?.points ?? 7;
-  const visibleCandles = useMemo(() => data.candles.slice(-pointsCount), [data.candles, pointsCount]);
+  const seed = hashSymbol(normalizedSymbol);
+  const periodCandles = useMemo(
+    () => generatePeriodCandles(data.candles, selectedPeriod, seed),
+    [data.candles, selectedPeriod, seed]
+  );
+  const visibleCandles = useMemo(() => periodCandles.slice(-pointsCount), [periodCandles, pointsCount]);
 
   const displayData = {
     ...data,
@@ -233,26 +235,26 @@ export default function Home() {
         </section>
 
         <section className={`rounded-[32px] p-6 transition ${cardClasses}`}>
-          <Tabs selectedIndex={activeTab} onSelect={setActiveTab}>
-            <TabList className="grid gap-2 sm:grid-cols-3 mb-4">
-              <Tab className="rounded-3xl border border-slate-300 bg-slate-100 px-5 py-3 text-sm font-semibold text-slate-700 transition hover:border-sky-500 hover:text-sky-700 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:hover:border-cyan-400 dark:hover:text-white" selectedClassName="border-sky-500 bg-sky-500/10 text-sky-700 dark:border-cyan-400 dark:bg-cyan-500/10 dark:text-cyan-200">Stocks</Tab>
-              <Tab className="rounded-3xl border border-slate-300 bg-slate-100 px-5 py-3 text-sm font-semibold text-slate-700 transition hover:border-sky-500 hover:text-sky-700 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:hover:border-cyan-400 dark:hover:text-white" selectedClassName="border-sky-500 bg-sky-500/10 text-sky-700 dark:border-cyan-400 dark:bg-cyan-500/10 dark:text-cyan-200">Portfolio</Tab>
-              <Tab className="rounded-3xl border border-slate-300 bg-slate-100 px-5 py-3 text-sm font-semibold text-slate-700 transition hover:border-sky-500 hover:text-sky-700 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:hover:border-cyan-400 dark:hover:text-white" selectedClassName="border-sky-500 bg-sky-500/10 text-sky-700 dark:border-cyan-400 dark:bg-cyan-500/10 dark:text-cyan-200">Watchlist</Tab>
-            </TabList>
-
-            <TabPanel>
-              <div className={`rounded-[28px] p-6 transition ${softCardClasses}`}>
-                <h3 className="text-xl font-semibold text-slate-900 dark:text-slate-100">Stocks</h3>
-                <p className="mt-2 text-slate-600 dark:text-slate-400">A live view of stock performance and technical indicators.</p>
-              </div>
-            </TabPanel>
-            <TabPanel>
-              <Portfolio />
-            </TabPanel>
-            <TabPanel>
-              <Watchlist />
-            </TabPanel>
-          </Tabs>
+          <div className="flex items-center justify-between">
+            <div>
+              <h2 className="text-2xl font-semibold text-slate-900 dark:text-slate-100">Quick access</h2>
+              <p className="mt-2 text-slate-600 dark:text-slate-400">Navigate to your portfolio or watchlist.</p>
+            </div>
+            <div className="flex flex-col gap-2 sm:flex-row">
+              <Link
+                href="/portfolio"
+                className="rounded-2xl border border-slate-300 px-4 py-2 text-sm font-medium transition hover:border-sky-500 hover:bg-sky-500/10 dark:border-slate-700 dark:hover:border-cyan-400 dark:hover:bg-cyan-500/10"
+              >
+                Portfolio
+              </Link>
+              <Link
+                href="/watchlist"
+                className="rounded-2xl border border-slate-300 px-4 py-2 text-sm font-medium transition hover:border-sky-500 hover:bg-sky-500/10 dark:border-slate-700 dark:hover:border-cyan-400 dark:hover:bg-cyan-500/10"
+              >
+                Watchlist
+              </Link>
+            </div>
+          </div>
         </section>
       </div>
     </div>

@@ -1,16 +1,28 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { SymbolData, dashboardData, buildFallbackData } from "../data/stocks";
 
 export function useRealTimeData(symbol: string) {
+  const normalizedSymbol = symbol.trim().toUpperCase() || "AAPL";
+  const prevSymbolRef = useRef(normalizedSymbol);
+
   const [data, setData] = useState<SymbolData>(() => {
-    const normalizedSymbol = symbol.trim().toUpperCase() || "AAPL";
     return dashboardData[normalizedSymbol] ?? buildFallbackData(normalizedSymbol);
   });
 
+  // Update data when symbol changes
+  useEffect(() => {
+    if (prevSymbolRef.current !== normalizedSymbol) {
+      prevSymbolRef.current = normalizedSymbol;
+      const newData = dashboardData[normalizedSymbol] ?? buildFallbackData(normalizedSymbol);
+      setData(newData);
+    }
+  }, [normalizedSymbol]);
+
+  // Simulate real-time market updates
   useEffect(() => {
     const interval = setInterval(() => {
       setData((prevData) => {
-        const change = (Math.random() - 0.5) * 2; // Random change between -1 and 1
+        const change = (Math.random() - 0.5) * 2;
         const newValue = Math.max(0, prevData.marketValue + change);
         const pctChange = ((newValue - prevData.marketValue) / prevData.marketValue) * 100;
         return {
@@ -19,7 +31,7 @@ export function useRealTimeData(symbol: string) {
           marketChange: `${change >= 0 ? "+" : ""}${change.toFixed(2)} (${pctChange >= 0 ? "+" : ""}${pctChange.toFixed(2)}%) today`,
         };
       });
-    }, 5000); // Update every 5 seconds
+    }, 5000);
 
     return () => clearInterval(interval);
   }, []);

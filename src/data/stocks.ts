@@ -242,3 +242,42 @@ export function buildFallbackData(symbol: string): SymbolData {
     },
   };
 }
+
+export function generatePeriodCandles(
+  baseCandles: CandlePoint[],
+  period: "1D" | "1W" | "1M",
+  seed: number
+): CandlePoint[] {
+  if (period === "1D") {
+    // 5 past trading days with 5-min intervals (showing 5 candles for the last trading days)
+    return baseCandles.slice(-5).map((candle, idx) => ({
+      ...candle,
+      label: `Day ${idx + 1}`,
+    }));
+  } else if (period === "1W") {
+    // 5 past trading days with 1-day intervals
+    return baseCandles.slice(-5).map((candle, idx) => ({
+      ...candle,
+      label: `Day ${idx + 1}`,
+    }));
+  } else if (period === "1M") {
+    // All trading days in current calendar month (typically 20-22)
+    const daysInMonth = Math.floor(18 + (seed % 6)); // 18-23 trading days in a month
+    return Array.from({ length: daysInMonth }, (_, index) => {
+      const baseIndex = Math.floor((index / daysInMonth) * baseCandles.length);
+      const baseCandle = baseCandles[baseIndex] || baseCandles[baseCandles.length - 1];
+      const volatility = (Math.sin(index * 0.5 + seed) * 0.5 + 0.5) * 2;
+      const dayNum = index + 1;
+
+      return {
+        label: `${dayNum}`,
+        open: Number((baseCandle.open + (seed % 10 - 5) * volatility).toFixed(2)),
+        high: Number((baseCandle.high + (seed % 15 - 7) * volatility).toFixed(2)),
+        low: Number((baseCandle.low - (seed % 15 - 7) * volatility).toFixed(2)),
+        close: Number((baseCandle.close + (seed % 10 - 5) * volatility).toFixed(2)),
+      };
+    });
+  }
+
+  return baseCandles;
+}
