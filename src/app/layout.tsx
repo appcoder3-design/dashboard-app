@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Stock Dashboard - Comprehensive Analysis Platform",
+  title: "NewFinanceGuide - Comprehensive Analysis Platform",
   description: "Professional stock analysis with real-time data, portfolio tracking, and financial metrics.",
 };
 
