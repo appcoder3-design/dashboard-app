@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 import { useRealTimeData } from "../hooks/useRealTimeData";
@@ -205,17 +205,17 @@ export default function Home() {
 
               <section className="rounded-xl border p-4 border-slate-800 bg-slate-950/70">
                 <h2 className="text-lg font-semibold mb-4">Price Trend</h2>
-                <PriceChart data={displayData.candles} />
+                <PriceChart data={displayData.candles} isDarkMode={isDarkMode} />
               </section>
 
               <section className="rounded-xl border p-4 border-slate-800 bg-slate-950/70">
                 <h2 className="text-lg font-semibold mb-4">Financial Metrics</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <MetricsChart metrics={displayData.metrics} type="pe" />
-                  <MetricsChart metrics={displayData.metrics} type="roe" />
-                  <MetricsChart metrics={displayData.metrics} type="debtToEquity" />
-                  <MetricsChart metrics={displayData.metrics} type="revenue" />
-                  <MetricsChart metrics={displayData.metrics} type="eps" />
+                  <MetricsChart metrics={displayData.metrics} type="pe" isDarkMode={isDarkMode} />
+                  <MetricsChart metrics={displayData.metrics} type="roe" isDarkMode={isDarkMode} />
+                  <MetricsChart metrics={displayData.metrics} type="debtToEquity" isDarkMode={isDarkMode} />
+                  <MetricsChart metrics={displayData.metrics} type="revenue" isDarkMode={isDarkMode} />
+                  <MetricsChart metrics={displayData.metrics} type="eps" isDarkMode={isDarkMode} />
                 </div>
               </section>
             </div>

@@ -6,17 +6,14 @@ interface WatchlistItem {
 }
 
 export default function Watchlist() {
-  const [watchlists, setWatchlists] = useState<Record<string, WatchlistItem[]>>({});
+  const [watchlists, setWatchlists] = useState<Record<string, WatchlistItem[]>>(() => {
+    if (typeof window === "undefined") return {};
+    const saved = window.localStorage.getItem("watchlists");
+    return saved ? JSON.parse(saved) : {};
+  });
   const [selectedWatchlist, setSelectedWatchlist] = useState<string>("");
   const [newSymbol, setNewSymbol] = useState("");
   const [newAlertPrice, setNewAlertPrice] = useState("");
-
-  useEffect(() => {
-    const saved = localStorage.getItem("watchlists");
-    if (saved) {
-      setWatchlists(JSON.parse(saved));
-    }
-  }, []);
 
   useEffect(() => {
     localStorage.setItem("watchlists", JSON.stringify(watchlists));

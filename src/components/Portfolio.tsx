@@ -12,18 +12,15 @@ interface PortfolioData {
 }
 
 export default function Portfolio() {
-  const [portfolios, setPortfolios] = useState<PortfolioData[]>([]);
+  const [portfolios, setPortfolios] = useState<PortfolioData[]>(() => {
+    if (typeof window === "undefined") return [];
+    const saved = window.localStorage.getItem("portfolios");
+    return saved ? JSON.parse(saved) : [];
+  });
   const [selectedPortfolio, setSelectedPortfolio] = useState<string>("");
   const [newSymbol, setNewSymbol] = useState("");
   const [newShares, setNewShares] = useState("");
   const [newCost, setNewCost] = useState("");
-
-  useEffect(() => {
-    const saved = localStorage.getItem("portfolios");
-    if (saved) {
-      setPortfolios(JSON.parse(saved));
-    }
-  }, []);
 
   useEffect(() => {
     localStorage.setItem("portfolios", JSON.stringify(portfolios));
