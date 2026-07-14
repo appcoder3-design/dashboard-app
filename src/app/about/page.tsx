@@ -29,21 +29,36 @@ export default function About() {
     <div className={`min-h-screen px-4 py-8 transition-colors duration-300 ${pageClasses}`}>
       <div className="mx-auto max-w-4xl flex flex-col gap-8">
         <div className={`rounded-[32px] p-6 shadow-2xl shadow-slate-950/20 backdrop-blur-xl transition ${cardClasses}`}>
-          <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
-            <div className="flex-1">
-              <p className="text-sm uppercase tracking-[0.35em] text-sky-500/80">About</p>
-              <h1 className="mt-3 text-4xl font-semibold tracking-tight text-slate-900 dark:text-slate-100">About This Page</h1>
-              <p className="mt-4 max-w-3xl text-slate-600 dark:text-slate-400 leading-relaxed">
+          <div className="flex flex-col gap-6">
+            <div className="flex items-start justify-between">
+              <div className="flex-1">
+                <p className="text-sm uppercase tracking-[0.35em] text-sky-500/80">About</p>
+                <h1 className="mt-3 text-4xl font-semibold tracking-tight text-slate-900 dark:text-slate-100">About This Page</h1>
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsDarkMode((current) => !current)}
+                className="rounded-2xl border px-4 py-2 text-sm font-medium transition hover:border-sky-400 hover:bg-sky-500/10 dark:hover:border-cyan-400 whitespace-nowrap"
+              >
+                {isDarkMode ? "Light Mode" : "Dark Mode"}
+              </button>
+            </div>
+            <div>
+              <p className="mt-0 max-w-3xl text-slate-600 dark:text-slate-400 leading-relaxed">
                 This is a test page compiled using VS Code minor project. It is a comprehensive financial dashboard application built with modern web technologies to provide a polished and intuitive interface for tracking stock performance, analyzing key financial metrics, and managing investment portfolios.
               </p>
+              <p className="mt-4 text-slate-600 dark:text-slate-400">
+                Follow our insights and updates on{" "}
+                <a
+                  href="https://steadywin.substack.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sky-600 dark:text-cyan-400 font-semibold hover:underline"
+                >
+                  Substack
+                </a>
+              </p>
             </div>
-            <button
-              type="button"
-              onClick={() => setIsDarkMode((current) => !current)}
-              className="rounded-2xl border px-4 py-2 text-sm font-medium transition hover:border-sky-400 hover:bg-sky-500/10 dark:hover:border-cyan-400 whitespace-nowrap"
-            >
-              {isDarkMode ? "Light Mode" : "Dark Mode"}
-            </button>
           </div>
         </div>
 
