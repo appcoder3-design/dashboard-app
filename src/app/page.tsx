@@ -35,7 +35,6 @@ export default function Home() {
   const [compoundStartingValue, setCompoundStartingValue] = useState(1000);
   const [compoundGrowthRate, setCompoundGrowthRate] = useState(10);
   const [compoundNumPeriods, setCompoundNumPeriods] = useState(10);
-  const [logoImage, setLogoImage] = useState<string | null>(null);
 
   const normalizedSymbol = symbolInput.trim().toUpperCase() || "AAPL";
   const data = useRealTimeData(normalizedSymbol);
@@ -46,26 +45,6 @@ export default function Home() {
     window.document.documentElement.classList.toggle("light-theme", !isDarkMode);
     window.localStorage.setItem("dashboard-theme", isDarkMode ? "dark" : "light");
   }, [isDarkMode]);
-
-  const handleLogoUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const imageData = e.target?.result as string;
-        setLogoImage(imageData);
-        window.localStorage.setItem("dashboard-logo", imageData);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  useEffect(() => {
-    const savedLogo = window.localStorage.getItem("dashboard-logo");
-    if (savedLogo) {
-      setLogoImage(savedLogo);
-    }
-  }, []);
 
   const pointsCount = periods.find((period) => period.id === selectedPeriod)?.points ?? 7;
   const seed = hashSymbol(normalizedSymbol);
@@ -95,27 +74,14 @@ export default function Home() {
           <div className="flex flex-col gap-8 lg:flex-row lg:items-start lg:justify-between">
             <div className="flex flex-col gap-6 lg:flex-row lg:items-start gap-8 flex-1">
               <div className="flex flex-col items-center gap-3">
-                {logoImage ? (
-                  <img
-                    src={logoImage}
-                    alt="Business Logo"
-                    className="w-24 h-24 rounded-lg object-contain border-2 border-sky-500/50 dark:border-cyan-400/50"
-                  />
-                ) : (
-                  <div className={`w-24 h-24 rounded-lg border-2 border-dashed border-sky-500/50 dark:border-cyan-400/50 flex items-center justify-center ${softCardClasses}`}>
-                    <span className="text-xs text-center text-slate-500 dark:text-slate-400 px-2">Logo</span>
-                  </div>
-                )}
-                <label className="cursor-pointer text-xs font-medium text-sky-600 dark:text-cyan-400 hover:underline">
-                  Upload Logo
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleLogoUpload}
-                    className="hidden"
-                    aria-label="Upload business logo"
-                  />
-                </label>
+                <img
+                  src="/images/logo.png"
+                  alt="KALKI Business Logo"
+                  className="w-24 h-24 rounded-lg object-contain border-2 border-sky-500/50 dark:border-cyan-400/50"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).style.display = 'none';
+                  }}
+                />
               </div>
               <div className="flex-1">
                 <p className="text-sm uppercase tracking-[0.35em] text-sky-500/80">Business Dashboard</p>
