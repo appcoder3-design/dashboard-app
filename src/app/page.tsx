@@ -78,14 +78,10 @@ export default function Home() {
                   src="/images/logo.png"
                   alt="KALKI Business Logo"
                   className="w-24 h-24 rounded-lg object-contain border-2 border-sky-500/50 dark:border-cyan-400/50"
-                  onError={(e) => {
-                    (e.target as HTMLImageElement).style.display = 'none';
-                  }}
                 />
               </div>
               <div className="flex-1">
-                <p className="text-sm uppercase tracking-[0.35em] text-sky-500/80">Business Dashboard</p>
-                <h1 className="mt-3 text-4xl font-semibold tracking-tight text-slate-900 dark:text-slate-100">KALKI BUSINESS VENTURES</h1>
+                <h1 className="mt-0 text-4xl font-semibold tracking-tight text-slate-900 dark:text-slate-100">KALKI BUSINESS VENTURES</h1>
                 <p className="mt-2 max-w-2xl text-slate-600 dark:text-slate-400">Track the latest stock performance, compare key metrics, and explore portfolio health in one polished view.</p>
               </div>
             </div>
