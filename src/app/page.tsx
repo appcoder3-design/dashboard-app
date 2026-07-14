@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
 import { useRealTimeData } from "../hooks/useRealTimeData";
 import { generatePeriodCandles, hashSymbol } from "../data/stocks";
 import PriceChart from "../components/PriceChart";
@@ -31,6 +32,9 @@ export default function Home() {
     return savedTheme === "dark";
   });
   const [selectedPeriod, setSelectedPeriod] = useState<PeriodId>("1W");
+  const [compoundStartingValue, setCompoundStartingValue] = useState(1000);
+  const [compoundGrowthRate, setCompoundGrowthRate] = useState(10);
+  const [compoundNumPeriods, setCompoundNumPeriods] = useState(10);
 
   const normalizedSymbol = symbolInput.trim().toUpperCase() || "AAPL";
   const data = useRealTimeData(normalizedSymbol);
@@ -89,6 +93,12 @@ export default function Home() {
                   ))}
                 </select>
               </div>
+              <Link
+                href="/about"
+                className="rounded-2xl border border-slate-300 px-4 py-2 text-sm font-medium transition hover:border-sky-500 hover:bg-sky-500/10 dark:border-slate-700 dark:hover:border-cyan-400 dark:hover:bg-cyan-500/10 text-center"
+              >
+                About This Page
+              </Link>
               <button
                 type="button"
                 onClick={() => setIsDarkMode((current) => !current)}
@@ -253,6 +263,136 @@ export default function Home() {
               >
                 Watchlist
               </Link>
+            </div>
+          </div>
+        </section>
+
+        <section className={`rounded-[32px] p-6 transition ${cardClasses}`}>
+          <h2 className="text-2xl font-semibold text-slate-900 dark:text-slate-100">Compound Interest Calculator</h2>
+          <p className="mt-2 text-slate-600 dark:text-slate-400">Calculate how your investment grows over time with compound interest.</p>
+          
+          <div className={`mt-6 rounded-[28px] p-4 transition ${softCardClasses}`}>
+            <div className="grid gap-4 sm:grid-cols-3">
+              <div className="flex flex-col">
+                <label htmlFor="starting-value" className="text-xs uppercase tracking-[0.28em] text-slate-600 dark:text-slate-400 font-semibold mb-2">
+                  Starting Value ($)
+                </label>
+                <input
+                  id="starting-value"
+                  type="number"
+                  value={compoundStartingValue}
+                  onChange={(e) => setCompoundStartingValue(Math.max(1, Number(e.target.value) || 0))}
+                  className="rounded-2xl border border-slate-300 bg-white px-4 py-2 text-slate-900 outline-none transition focus:border-sky-500 focus:ring-1 focus:ring-sky-200 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:focus:border-cyan-400 dark:focus:ring-cyan-500/20"
+                  min="1"
+                  step="100"
+                />
+              </div>
+              <div className="flex flex-col">
+                <label htmlFor="growth-rate" className="text-xs uppercase tracking-[0.28em] text-slate-600 dark:text-slate-400 font-semibold mb-2">
+                  Growth Rate (%)
+                </label>
+                <input
+                  id="growth-rate"
+                  type="number"
+                  value={compoundGrowthRate}
+                  onChange={(e) => setCompoundGrowthRate(Math.max(0, Number(e.target.value) || 0))}
+                  className="rounded-2xl border border-slate-300 bg-white px-4 py-2 text-slate-900 outline-none transition focus:border-sky-500 focus:ring-1 focus:ring-sky-200 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:focus:border-cyan-400 dark:focus:ring-cyan-500/20"
+                  min="0"
+                  step="0.5"
+                />
+              </div>
+              <div className="flex flex-col">
+                <label htmlFor="num-periods" className="text-xs uppercase tracking-[0.28em] text-slate-600 dark:text-slate-400 font-semibold mb-2">
+                  Number of Periods
+                </label>
+                <input
+                  id="num-periods"
+                  type="number"
+                  value={compoundNumPeriods}
+                  onChange={(e) => setCompoundNumPeriods(Math.max(1, Number(e.target.value) || 1))}
+                  className="rounded-2xl border border-slate-300 bg-white px-4 py-2 text-slate-900 outline-none transition focus:border-sky-500 focus:ring-1 focus:ring-sky-200 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:focus:border-cyan-400 dark:focus:ring-cyan-500/20"
+                  min="1"
+                  step="1"
+                />
+              </div>
+            </div>
+          </div>
+          
+          <div className="mt-8 grid gap-6 xl:grid-cols-[1fr_1.2fr]">
+            <div className={`rounded-[28px] p-4 transition ${softCardClasses}`}>
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead>
+                    <tr className="border-b border-slate-300 dark:border-slate-700">
+                      <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-300">Period</th>
+                      <th className="px-4 py-3 text-right text-sm font-semibold text-slate-700 dark:text-slate-300">Amount</th>
+                      <th className="px-4 py-3 text-right text-sm font-semibold text-slate-700 dark:text-slate-300">Growth</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {useMemo(() => {
+                      const compoundData = [];
+                      const principal = compoundStartingValue;
+                      const rate = compoundGrowthRate / 100;
+                      for (let i = 0; i <= compoundNumPeriods; i++) {
+                        const amount = principal * Math.pow(1 + rate, i);
+                        const growth = amount - principal;
+                        compoundData.push({ period: i, amount, growth });
+                      }
+                      return compoundData.map((row) => (
+                        <tr key={row.period} className="border-b border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition">
+                          <td className="px-4 py-3 text-sm font-medium text-slate-900 dark:text-slate-100">{row.period}</td>
+                          <td className="px-4 py-3 text-right text-sm font-semibold text-sky-700 dark:text-cyan-300">${numberFormat.format(row.amount)}</td>
+                          <td className="px-4 py-3 text-right text-sm font-semibold text-emerald-600 dark:text-emerald-400">+${numberFormat.format(row.growth)}</td>
+                        </tr>
+                      ));
+                    }, [compoundStartingValue, compoundGrowthRate, compoundNumPeriods])}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div className={`rounded-[28px] p-4 transition ${softCardClasses}`}>
+              <ResponsiveContainer width="100%" height={300}>
+                <LineChart
+                  data={useMemo(() => {
+                    const data = [];
+                    const principal = compoundStartingValue;
+                    const rate = compoundGrowthRate / 100;
+                    for (let i = 0; i <= compoundNumPeriods; i++) {
+                      data.push({
+                        period: i,
+                        amount: principal * Math.pow(1 + rate, i),
+                      });
+                    }
+                    return data;
+                  }, [compoundStartingValue, compoundGrowthRate, compoundNumPeriods])}
+                  margin={{ top: 5, right: 30, left: 0, bottom: 5 }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" stroke={isDarkMode ? "#334155" : "#e2e8f0"} />
+                  <XAxis dataKey="period" stroke={isDarkMode ? "#94a3b8" : "#64748b"} />
+                  <YAxis stroke={isDarkMode ? "#94a3b8" : "#64748b"} />
+                  <Tooltip
+                    contentStyle={{
+                      backgroundColor: isDarkMode ? "#1e293b" : "#f8fafc",
+                      border: `1px solid ${isDarkMode ? "#334155" : "#e2e8f0"}`,
+                      borderRadius: "12px",
+                    }}
+                    labelStyle={{ color: isDarkMode ? "#e2e8f0" : "#1e293b" }}
+                    formatter={(value) => `$${numberFormat.format(value as number)}`}
+                  />
+                  <Legend wrapperStyle={{ paddingTop: "20px" }} />
+                  <Line
+                    type="monotone"
+                    dataKey="amount"
+                    stroke={isDarkMode ? "#06b6d4" : "#0284c7"}
+                    dot={{ fill: isDarkMode ? "#06b6d4" : "#0284c7", r: 4 }}
+                    activeDot={{ r: 6 }}
+                    strokeWidth={2}
+                    name="Portfolio Value"
+                  />
+                </LineChart>
+              </ResponsiveContainer>
             </div>
           </div>
         </section>
