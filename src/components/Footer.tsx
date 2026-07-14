@@ -4,7 +4,7 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid gap-8 md:grid-cols-3">
           <div>
-            <h3 className="text-lg font-semibold text-white mb-4">NewFinanceGuide</h3>
+            <h3 className="text-lg font-semibold text-white mb-4">KALKI BUSINESS VENTURES</h3>
             <p className="text-sm text-slate-400">
               A modern platform for active investors to monitor, analyze, and manage positions with confidence.
             </p>

@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Header from "../components/Header";
 import Footer from "../components/Footer";
 
 const geistSans = Geist({
@@ -15,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "NewFinanceGuide - Comprehensive Analysis Platform",
-  description: "Professional stock analysis with real-time data, portfolio tracking, and financial metrics.",
+  title: "KALKI BUSINESS VENTURES - Financial Dashboard",
+  description: "Professional financial dashboard with real-time stock data, portfolio tracking, and investment analytics.",
 };
 
 export default function RootLayout({
@@ -30,7 +29,6 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <Header />
         <main className="flex-1">{children}</main>
         <Footer />
       </body>
