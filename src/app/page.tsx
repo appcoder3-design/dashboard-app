@@ -158,6 +158,35 @@ export default function Home() {
           </div>
         </div>
 
+        <section className={`rounded-[32px] p-6 transition ${cardClasses}`}>
+          <div className="flex items-center justify-between">
+            <div>
+              <h2 className="text-2xl font-semibold text-slate-900 dark:text-slate-100">Quick access</h2>
+              <p className="mt-2 text-slate-600 dark:text-slate-400">Navigate to your portfolio or watchlist.</p>
+            </div>
+            <div className="flex flex-col gap-2 sm:flex-row">
+              <Link
+                href="/portfolio"
+                className="rounded-2xl border border-slate-300 px-4 py-2 text-sm font-medium transition hover:border-sky-500 hover:bg-sky-500/10 dark:border-slate-700 dark:hover:border-cyan-400 dark:hover:bg-cyan-500/10"
+              >
+                Portfolio
+              </Link>
+              <Link
+                href="/watchlist"
+                className="rounded-2xl border border-slate-300 px-4 py-2 text-sm font-medium transition hover:border-sky-500 hover:bg-sky-500/10 dark:border-slate-700 dark:hover:border-cyan-400 dark:hover:bg-cyan-500/10"
+              >
+                Watchlist
+              </Link>
+              <Link
+                href="/about"
+                className="rounded-2xl border border-slate-300 px-4 py-2 text-sm font-medium transition hover:border-sky-500 hover:bg-sky-500/10 dark:border-slate-700 dark:hover:border-cyan-400 dark:hover:bg-cyan-500/10"
+              >
+                About This Page
+              </Link>
+            </div>
+          </div>
+        </section>
+
         <div className="grid gap-6 xl:grid-cols-[1.4fr_0.95fr]">
           <section className={`rounded-[32px] p-6 transition ${cardClasses}`}>
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -252,28 +281,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section className={`rounded-[32px] p-6 transition ${cardClasses}`}>
-          <div className="flex items-center justify-between">
-            <div>
-              <h2 className="text-2xl font-semibold text-slate-900 dark:text-slate-100">Quick access</h2>
-              <p className="mt-2 text-slate-600 dark:text-slate-400">Navigate to your portfolio or watchlist.</p>
-            </div>
-            <div className="flex flex-col gap-2 sm:flex-row">
-              <Link
-                href="/portfolio"
-                className="rounded-2xl border border-slate-300 px-4 py-2 text-sm font-medium transition hover:border-sky-500 hover:bg-sky-500/10 dark:border-slate-700 dark:hover:border-cyan-400 dark:hover:bg-cyan-500/10"
-              >
-                Portfolio
-              </Link>
-              <Link
-                href="/watchlist"
-                className="rounded-2xl border border-slate-300 px-4 py-2 text-sm font-medium transition hover:border-sky-500 hover:bg-sky-500/10 dark:border-slate-700 dark:hover:border-cyan-400 dark:hover:bg-cyan-500/10"
-              >
-                Watchlist
-              </Link>
-            </div>
-          </div>
-        </section>
+
 
         <section className={`rounded-[32px] p-6 transition ${cardClasses}`}>
           <h2 className="text-2xl font-semibold text-slate-900 dark:text-slate-100">Compound Interest Calculator</h2>
