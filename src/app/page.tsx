@@ -19,15 +19,15 @@ export default function Home() {
       <div className="mx-auto flex max-w-6xl flex-col gap-8">
         <header className={`rounded-[32px] p-4 shadow-2xl shadow-slate-950/20 backdrop-blur-xl transition ${cardClasses}`}>
           <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-5">
               <img
                 src="/images/logo.png"
                 alt="KALKI Business Logo"
-                className="h-14 w-14 rounded-lg object-contain border-2 border-sky-500/50 dark:border-cyan-400/50"
+                className="h-20 w-20 rounded-xl object-contain border-2 border-sky-500/50 dark:border-cyan-400/50"
               />
               <div>
                 <p className="text-xs uppercase tracking-[0.35em] text-sky-500 dark:text-cyan-300">Kalki Business</p>
-                <h1 className="text-2xl font-semibold tracking-tight text-slate-900 dark:text-slate-100">Global Investment Hub</h1>
+                <h1 className="text-[1.55rem] font-semibold tracking-tight text-slate-900 dark:text-slate-100">Global Investment Hub</h1>
               </div>
             </div>
 
@@ -51,9 +51,17 @@ export default function Home() {
 
         <section className={`overflow-hidden rounded-[32px] p-8 transition ${cardClasses}`}>
           <div className="grid gap-8 lg:grid-cols-[1.15fr_0.85fr] lg:items-start">
-            <div className="rounded-[28px] bg-gradient-to-br from-sky-500/10 via-transparent to-cyan-500/10 p-6 dark:from-sky-500/10 dark:via-slate-950 dark:to-cyan-500/10">
+            <div
+              className="relative overflow-hidden rounded-[28px] bg-cover bg-center p-6"
+              style={{
+                backgroundImage:
+                  "linear-gradient(rgba(12, 24, 55, 0.72), rgba(12, 24, 55, 0.72)), url('https://images.unsplash.com/photo-1525625293386-3f8f99389edd?auto=format&fit=crop&w=1400&q=80')",
+              }}
+            >
+              <div className="absolute inset-0 bg-gradient-to-br from-sky-500/20 via-transparent to-cyan-500/20" />
+              <div className="relative">
               <h2 className="text-4xl font-semibold tracking-tight text-slate-900 dark:text-slate-100">Kalki Business was created in Singapore as a private limited firm to trade on global stock exchanges and generate investment income.</h2>
-              <p className="mt-5 max-w-3xl text-lg leading-relaxed text-slate-600 dark:text-slate-400">
+              <p className="mt-5 max-w-3xl text-sm leading-relaxed text-slate-600 dark:text-slate-400">
                 This landing page presents the company profile and gives visitors a clear path into the market dashboard, portfolio tools, and watchlist pages.
               </p>
               <div className="mt-6 flex flex-wrap gap-3">
@@ -74,6 +82,7 @@ export default function Home() {
                 <span className="rounded-full border border-sky-500/40 bg-sky-500/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.28em] text-sky-700 dark:border-cyan-400/40 dark:bg-cyan-500/10 dark:text-cyan-200">Singapore</span>
                 <span className="rounded-full border border-sky-500/40 bg-sky-500/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.28em] text-sky-700 dark:border-cyan-400/40 dark:bg-cyan-500/10 dark:text-cyan-200">Global Markets</span>
                 <span className="rounded-full border border-sky-500/40 bg-sky-500/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.28em] text-sky-700 dark:border-cyan-400/40 dark:bg-cyan-500/10 dark:text-cyan-200">Investment Income</span>
+              </div>
               </div>
             </div>
 
