@@ -38,8 +38,8 @@ export default function About() {
             </div>
             <div>
               <p className="mt-0 max-w-3xl text-slate-600 dark:text-slate-400 leading-relaxed">
-                This website is a test project to learn coding and web design. It has been built using VS Code, Claude and GitHub. It aims to emulate a comprehensive financial dashboard application built with modern web technologies to provide a polished and intuitive interface for tracking stock performance, analyzing key financial metrics, and managing investment portfolios.
-              </p>
+                This website is a test project to learn coding and web design. It has been built using VS Code, Claude and GitHub. It emulates a financial dashboard built with modern technologies with a polished and intuitive interface for tracking stock performance and analyzing key financial metrics.
+                             </p>
               <p className="mt-4 text-slate-600 dark:text-slate-400">
                 I also write about my latest trading results on {" "}
                 <a
