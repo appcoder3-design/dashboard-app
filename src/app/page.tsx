@@ -50,71 +50,44 @@ export default function Home() {
         </header>
 
         <section className={`overflow-hidden rounded-[32px] p-8 transition ${cardClasses}`}>
-          <div className="grid gap-8 lg:grid-cols-[1.15fr_0.85fr] lg:items-start">
-            <div
-              className="relative overflow-hidden rounded-[28px] bg-cover bg-center p-6"
-              style={{
-                backgroundImage:
-                  "linear-gradient(rgba(12, 24, 55, 0.72), rgba(12, 24, 55, 0.72)), url('https://images.unsplash.com/photo-1525625293386-3f8f99389edd?auto=format&fit=crop&w=1400&q=80')",
-              }}
-            >
-              <div className="absolute inset-0 bg-gradient-to-br from-sky-500/20 via-transparent to-cyan-500/20" />
-              <div className="relative">
-              <h2 className="text-4xl font-semibold tracking-tight text-slate-900 dark:text-slate-100">Kalki Business was created in Singapore as a private limited firm to trade on global stock exchanges and generate investment income.</h2>
-              <p className="mt-5 max-w-3xl text-sm leading-relaxed text-slate-600 dark:text-slate-400">
+          <div className="space-y-6">
+            <div className="overflow-hidden rounded-[28px] border border-slate-200 bg-slate-100">
+              <div
+                className="h-[420px] w-full bg-cover bg-center"
+                style={{
+                  backgroundImage:
+                    "url('https://photostorage.explorest.com/asia/Singapore/yik-keat-lee-marina-east-view-of_marina-bay-sands-singapore-flyer-and-singapore-skyline-compressed.jpg')",
+                  backgroundPosition: "center center",
+                }}
+              />
+            </div>
+
+            <div className="rounded-[28px] bg-slate-50 p-6">
+              <h2 className="text-[1.65rem] font-medium leading-tight tracking-tight text-slate-900">
+                Kalki Business was created in Singapore as a private limited firm to trade on global stock exchanges and generate investment income.
+              </h2>
+              <p className="mt-4 max-w-3xl text-sm leading-relaxed text-slate-600">
                 This landing page presents the company profile and gives visitors a clear path into the market dashboard, portfolio tools, and watchlist pages.
               </p>
               <div className="mt-6 flex flex-wrap gap-3">
                 <Link
                   href="/dashboard"
-                  className="rounded-2xl bg-sky-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-sky-500 dark:bg-cyan-400 dark:text-slate-950 dark:hover:bg-cyan-300"
+                  className="rounded-2xl bg-sky-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-sky-500"
                 >
                   Open Dashboard
                 </Link>
                 <Link
                   href="/portfolio"
-                  className="rounded-2xl border border-slate-300 px-5 py-3 text-sm font-semibold transition hover:border-sky-500 hover:bg-sky-500/10 dark:border-slate-700 dark:hover:border-cyan-400 dark:hover:bg-cyan-500/10"
+                  className="rounded-2xl border border-slate-300 px-5 py-3 text-sm font-semibold transition hover:border-sky-500 hover:bg-sky-500/10"
                 >
                   View Portfolio
                 </Link>
               </div>
               <div className="mt-6 flex flex-wrap gap-2">
-                <span className="rounded-full border border-sky-500/40 bg-sky-500/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.28em] text-sky-700 dark:border-cyan-400/40 dark:bg-cyan-500/10 dark:text-cyan-200">Singapore</span>
-                <span className="rounded-full border border-sky-500/40 bg-sky-500/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.28em] text-sky-700 dark:border-cyan-400/40 dark:bg-cyan-500/10 dark:text-cyan-200">Global Markets</span>
-                <span className="rounded-full border border-sky-500/40 bg-sky-500/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.28em] text-sky-700 dark:border-cyan-400/40 dark:bg-cyan-500/10 dark:text-cyan-200">Investment Income</span>
+                <span className="rounded-full border border-sky-500/40 bg-sky-500/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.28em] text-sky-700">Singapore</span>
+                <span className="rounded-full border border-sky-500/40 bg-sky-500/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.28em] text-sky-700">Global Markets</span>
+                <span className="rounded-full border border-sky-500/40 bg-sky-500/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.28em] text-sky-700">Investment Income</span>
               </div>
-              </div>
-            </div>
-
-            <div className={`rounded-[28px] p-6 transition ${softCardClasses}`}>
-              <div className="flex items-center justify-between">
-                <h3 className="text-xl font-semibold text-slate-900 dark:text-slate-100">Company Snapshot</h3>
-                <span className="rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.28em] text-emerald-600 dark:text-emerald-300">Active</span>
-              </div>
-              <div className="mt-5 grid gap-4 sm:grid-cols-2">
-                <div className="rounded-3xl border border-slate-200 bg-white/80 p-4 dark:border-slate-700 dark:bg-slate-950/70">
-                  <p className="text-xs uppercase tracking-[0.28em] text-slate-500 dark:text-slate-400">Entity</p>
-                  <p className="mt-2 text-lg font-semibold text-slate-900 dark:text-slate-100">Private Limited</p>
-                </div>
-                <div className="rounded-3xl border border-slate-200 bg-white/80 p-4 dark:border-slate-700 dark:bg-slate-950/70">
-                  <p className="text-xs uppercase tracking-[0.28em] text-slate-500 dark:text-slate-400">Base</p>
-                  <p className="mt-2 text-lg font-semibold text-slate-900 dark:text-slate-100">Singapore</p>
-                </div>
-              </div>
-              <ul className="mt-5 space-y-3 text-slate-600 dark:text-slate-400">
-                <li className="flex items-start gap-3">
-                  <span className="mt-1 text-sky-500 dark:text-cyan-300">•</span>
-                  <span>Global stock exchange trading activity</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="mt-1 text-sky-500 dark:text-cyan-300">•</span>
-                  <span>Portfolio visibility across every major page</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="mt-1 text-sky-500 dark:text-cyan-300">•</span>
-                  <span>Income-oriented investing through disciplined market analysis</span>
-                </li>
-              </ul>
             </div>
           </div>
         </section>
