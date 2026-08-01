@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import Link from "next/link";
 
 const navItems = [
@@ -8,30 +7,12 @@ const navItems = [
   { href: "/dashboard", label: "Dashboard" },
   { href: "/portfolio", label: "Portfolio" },
   { href: "/watchlist", label: "Watchlist" },
-  { href: "/about", label: "About" },
 ] as const;
 
 export default function About() {
-  const [isDarkMode, setIsDarkMode] = useState(() => {
-    if (typeof window === "undefined") return false;
-    const savedTheme = window.localStorage.getItem("dashboard-theme");
-    return savedTheme === "light";
-  });
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    window.document.documentElement.classList.toggle("dark-theme", isDarkMode);
-    window.document.documentElement.classList.toggle("light-theme", !isDarkMode);
-    window.localStorage.setItem("dashboard-theme", isDarkMode ? "dark" : "light");
-  }, [isDarkMode]);
-
-  const pageClasses = isDarkMode ? "bg-slate-950 text-slate-100" : "bg-slate-50 text-slate-950";
-  const cardClasses = isDarkMode
-    ? "border border-slate-800 bg-slate-900/90"
-    : "border border-slate-200 bg-white/95";
-  const softCardClasses = isDarkMode
-    ? "border border-slate-800 bg-slate-900/80"
-    : "border border-slate-200 bg-slate-100";
+  const pageClasses = "bg-slate-50 text-slate-950";
+  const cardClasses = "border border-slate-200 bg-white/95";
+  const softCardClasses = "border border-slate-200 bg-slate-100";
 
   return (
     <div className={`min-h-screen px-4 py-8 transition-colors duration-300 ${pageClasses}`}>
@@ -48,18 +29,11 @@ export default function About() {
                   <Link
                     key={item.href}
                     href={item.href}
-                    className="rounded-2xl border border-slate-300 px-4 py-2 text-sm font-medium transition hover:border-sky-500 hover:bg-sky-500/10 dark:border-slate-700 dark:hover:border-cyan-400 dark:hover:bg-cyan-500/10"
+                    className="rounded-2xl border border-slate-300 px-4 py-2 text-sm font-medium transition hover:border-sky-500 hover:bg-sky-500/10"
                   >
                     {item.label}
                   </Link>
                 ))}
-                <button
-                  type="button"
-                  onClick={() => setIsDarkMode((current) => !current)}
-                  className="rounded-2xl border px-4 py-2 text-sm font-medium transition hover:border-sky-400 hover:bg-sky-500/10 dark:hover:border-cyan-400 whitespace-nowrap"
-                >
-                  {isDarkMode ? "Light Mode" : "Dark Mode"}
-                </button>
               </div>
             </div>
             <div>
