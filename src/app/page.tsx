@@ -1,6 +1,5 @@
 ﻿"use client";
 
-import { useEffect, useState } from "react";
 import Link from "next/link";
 
 const navItems = [
@@ -8,30 +7,12 @@ const navItems = [
   { href: "/dashboard", label: "Dashboard" },
   { href: "/portfolio", label: "Portfolio" },
   { href: "/watchlist", label: "Watchlist" },
-  { href: "/about", label: "About" },
 ] as const;
 
 export default function Home() {
-  const [isDarkMode, setIsDarkMode] = useState(() => {
-    if (typeof window === "undefined") return false;
-    const savedTheme = window.localStorage.getItem("dashboard-theme");
-    return savedTheme === "dark";
-  });
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    window.document.documentElement.classList.toggle("dark-theme", isDarkMode);
-    window.document.documentElement.classList.toggle("light-theme", !isDarkMode);
-    window.localStorage.setItem("dashboard-theme", isDarkMode ? "dark" : "light");
-  }, [isDarkMode]);
-
-  const pageClasses = isDarkMode ? "bg-slate-950 text-slate-100" : "bg-slate-50 text-slate-950";
-  const cardClasses = isDarkMode
-    ? "border border-slate-800 bg-slate-900/90"
-    : "border border-slate-200 bg-white/95";
-  const softCardClasses = isDarkMode
-    ? "border border-slate-800 bg-slate-900/80"
-    : "border border-slate-200 bg-slate-100";
+  const pageClasses = "bg-slate-50 text-slate-950";
+  const cardClasses = "border border-slate-200 bg-white/95";
+  const softCardClasses = "border border-slate-200 bg-slate-100";
 
   return (
     <div className={`min-h-screen px-4 py-8 transition-colors duration-300 ${pageClasses}`}>
@@ -57,20 +38,13 @@ export default function Home() {
                   href={item.href}
                   className={`rounded-2xl border px-4 py-2 text-sm font-medium transition ${
                     item.href === "/"
-                      ? "border-sky-500 bg-sky-500/10 text-sky-700 dark:border-cyan-400 dark:bg-cyan-500/10 dark:text-cyan-200"
-                      : "border-slate-300 hover:border-sky-500 hover:bg-sky-500/10 dark:border-slate-700 dark:hover:border-cyan-400 dark:hover:bg-cyan-500/10"
+                      ? "border-sky-500 bg-sky-500/10 text-sky-700"
+                      : "border-slate-300 hover:border-sky-500 hover:bg-sky-500/10"
                   }`}
                 >
                   {item.label}
                 </Link>
               ))}
-              <button
-                type="button"
-                onClick={() => setIsDarkMode((current) => !current)}
-                className="rounded-2xl border px-4 py-2 text-sm font-medium transition hover:border-sky-400 hover:bg-sky-500/10 dark:hover:border-cyan-400"
-              >
-                {isDarkMode ? "Light Mode" : "Dark Mode"}
-              </button>
             </nav>
           </div>
         </header>
@@ -78,8 +52,7 @@ export default function Home() {
         <section className={`overflow-hidden rounded-[32px] p-8 transition ${cardClasses}`}>
           <div className="grid gap-8 lg:grid-cols-[1.15fr_0.85fr] lg:items-start">
             <div className="rounded-[28px] bg-gradient-to-br from-sky-500/10 via-transparent to-cyan-500/10 p-6 dark:from-sky-500/10 dark:via-slate-950 dark:to-cyan-500/10">
-              <p className="text-sm uppercase tracking-[0.35em] text-sky-500 dark:text-cyan-300">About</p>
-              <h2 className="mt-3 text-4xl font-semibold tracking-tight text-slate-900 dark:text-slate-100">Kalki Business was created in Singapore as a private limited firm to trade on global stock exchanges and generate investment income.</h2>
+              <h2 className="text-4xl font-semibold tracking-tight text-slate-900 dark:text-slate-100">Kalki Business was created in Singapore as a private limited firm to trade on global stock exchanges and generate investment income.</h2>
               <p className="mt-5 max-w-3xl text-lg leading-relaxed text-slate-600 dark:text-slate-400">
                 This landing page presents the company profile and gives visitors a clear path into the market dashboard, portfolio tools, and watchlist pages.
               </p>

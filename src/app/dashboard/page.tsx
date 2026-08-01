@@ -28,27 +28,18 @@ const navItems = [
   { href: "/dashboard", label: "Dashboard" },
   { href: "/portfolio", label: "Portfolio" },
   { href: "/watchlist", label: "Watchlist" },
-  { href: "/about", label: "About" },
 ] as const;
 
 export default function Dashboard() {
   const [symbolInput, setSymbolInput] = useState("AAPL");
-  const [isDarkMode, setIsDarkMode] = useState(() => {
-    if (typeof window === "undefined") return false;
-    const savedTheme = window.localStorage.getItem("dashboard-theme");
-    return savedTheme === "dark";
-  });
   const [selectedPeriod, setSelectedPeriod] = useState<PeriodId>("1W");
+  const [chartMode, setChartMode] = useState<"line" | "area" | "bar">("line");
+  const [marketChartMode, setMarketChartMode] = useState<"candles" | "line" | "area">("candles");
+  const [showGrid, setShowGrid] = useState(true);
+  const [showVolume, setShowVolume] = useState(true);
 
   const normalizedSymbol = symbolInput.trim().toUpperCase() || "AAPL";
   const data = useRealTimeData(normalizedSymbol);
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    window.document.documentElement.classList.toggle("dark-theme", isDarkMode);
-    window.document.documentElement.classList.toggle("light-theme", !isDarkMode);
-    window.localStorage.setItem("dashboard-theme", isDarkMode ? "dark" : "light");
-  }, [isDarkMode]);
 
   const pointsCount = periods.find((period) => period.id === selectedPeriod)?.points ?? 7;
   const seed = hashSymbol(normalizedSymbol);
@@ -63,13 +54,10 @@ export default function Dashboard() {
     candles: visibleCandles,
   };
 
-  const pageClasses = isDarkMode ? "bg-slate-950 text-slate-100" : "bg-slate-50 text-slate-slate-950";
-  const cardClasses = isDarkMode
-    ? "border border-slate-800 bg-slate-900/90"
-    : "border border-slate-200 bg-white/95";
-  const softCardClasses = isDarkMode
-    ? "border border-slate-800 bg-slate-900/80"
-    : "border border-slate-200 bg-slate-100";
+  const isDarkMode = false;
+  const pageClasses = "bg-slate-50 text-slate-slate-950";
+  const cardClasses = "border border-slate-200 bg-white/95";
+  const softCardClasses = "border border-slate-200 bg-slate-100";
 
   return (
     <div className={`min-h-screen px-4 py-8 transition-colors duration-300 ${pageClasses}`}>
@@ -93,18 +81,15 @@ export default function Dashboard() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className="rounded-2xl border border-slate-300 px-4 py-2 text-sm font-medium transition hover:border-sky-500 hover:bg-sky-500/10 dark:border-slate-700 dark:hover:border-cyan-400 dark:hover:bg-cyan-500/10"
+                  className={`rounded-2xl border px-4 py-2 text-sm font-medium transition ${
+                    item.href === "/dashboard"
+                      ? "border-sky-500 bg-sky-500/10 text-sky-700"
+                      : "border-slate-300 hover:border-sky-500 hover:bg-sky-500/10"
+                  }`}
                 >
                   {item.label}
                 </Link>
               ))}
-              <button
-                type="button"
-                onClick={() => setIsDarkMode((current) => !current)}
-                className="rounded-2xl border px-4 py-2 text-sm font-medium transition hover:border-sky-400 hover:bg-sky-500/10 dark:hover:border-cyan-400"
-              >
-                {isDarkMode ? "Light Mode" : "Dark Mode"}
-              </button>
             </nav>
           </div>
 
@@ -141,9 +126,47 @@ export default function Dashboard() {
             </div>
 
             <div className={`rounded-[28px] p-6 transition ${cardClasses}`}>
-              <p className="text-sm uppercase tracking-[0.35em] text-slate-500 dark:text-slate-400">Trading pulse</p>
+              <div className="flex items-center justify-between gap-3">
+                <p className="text-sm uppercase tracking-[0.35em] text-slate-500 dark:text-slate-400">Trading pulse</p>
+                <div className="flex flex-wrap gap-2">
+                  {(["candles", "line", "area"] as const).map((mode) => (
+                    <button
+                      key={mode}
+                      type="button"
+                      onClick={() => setMarketChartMode(mode)}
+                      className={`rounded-full border px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.25em] transition ${
+                        marketChartMode === mode
+                          ? "border-sky-500 bg-sky-500/10 text-sky-700"
+                          : "border-slate-300 bg-slate-100 text-slate-700 hover:border-sky-500 hover:text-sky-700"
+                      }`}
+                    >
+                      {mode}
+                    </button>
+                  ))}
+                  <button
+                    type="button"
+                    onClick={() => setShowGrid((current) => !current)}
+                    className="rounded-full border border-slate-300 bg-slate-100 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.25em] text-slate-700 transition hover:border-sky-500 hover:text-sky-700"
+                  >
+                    {showGrid ? "Grid" : "Grid off"}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setShowVolume((current) => !current)}
+                    className="rounded-full border border-slate-300 bg-slate-100 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.25em] text-slate-700 transition hover:border-sky-500 hover:text-sky-700"
+                  >
+                    {showVolume ? "Volume" : "Volume off"}
+                  </button>
+                </div>
+              </div>
               <div className={`mt-6 rounded-[28px] p-4 transition ${softCardClasses}`}>
-                <CandlestickChart candles={displayData.candles} isDarkMode={isDarkMode} />
+                <CandlestickChart
+                  candles={displayData.candles}
+                  isDarkMode={isDarkMode}
+                  chartMode={marketChartMode}
+                  showGrid={showGrid}
+                  showVolume={showVolume}
+                />
               </div>
             </div>
           </div>
@@ -177,8 +200,32 @@ export default function Dashboard() {
               </div>
             </div>
 
+            <div className="mt-4 flex flex-wrap gap-2">
+              {(["line", "area", "bar"] as const).map((mode) => (
+                <button
+                  key={mode}
+                  type="button"
+                  onClick={() => setChartMode(mode)}
+                  className={`rounded-full border px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.25em] transition ${
+                    chartMode === mode
+                      ? "border-sky-500 bg-sky-500/10 text-sky-700"
+                      : "border-slate-300 bg-slate-100 text-slate-700 hover:border-sky-500 hover:text-sky-700"
+                  }`}
+                >
+                  {mode}
+                </button>
+              ))}
+              <button
+                type="button"
+                onClick={() => setShowGrid((current) => !current)}
+                className="rounded-full border border-slate-300 bg-slate-100 px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.25em] text-slate-700 transition hover:border-sky-500 hover:text-sky-700"
+              >
+                {showGrid ? "Hide Grid" : "Show Grid"}
+              </button>
+            </div>
+
             <div className={`mt-6 rounded-[28px] p-4 transition ${softCardClasses}`}>
-              <PriceChart data={displayData.candles} isDarkMode={isDarkMode} />
+              <PriceChart data={displayData.candles} isDarkMode={isDarkMode} chartMode={chartMode} showGrid={showGrid} />
             </div>
 
             <div className="mt-6 grid gap-4 sm:grid-cols-2">
@@ -240,6 +287,90 @@ export default function Dashboard() {
             <MetricsChart metrics={displayData.metrics} type="debtToEquity" isDarkMode={isDarkMode} />
             <MetricsChart metrics={displayData.metrics} type="revenue" isDarkMode={isDarkMode} />
             <MetricsChart metrics={displayData.metrics} type="eps" isDarkMode={isDarkMode} />
+          </div>
+        </section>
+
+        <section className={`rounded-[32px] p-6 transition ${cardClasses}`}>
+          <div className="grid gap-6 xl:grid-cols-[1.2fr_1fr]">
+            <div>
+              <h2 className="text-2xl font-semibold text-slate-900 dark:text-slate-100">Earnings Table</h2>
+              <div className="mt-4 overflow-hidden rounded-[24px] border border-slate-200">
+                <table className="min-w-full divide-y divide-slate-200 text-left text-sm">
+                  <thead className="bg-slate-50 text-slate-600">
+                    <tr>
+                      <th className="px-4 py-3 font-semibold">Quarter</th>
+                      <th className="px-4 py-3 font-semibold">Revenue (B)</th>
+                      <th className="px-4 py-3 font-semibold">EPS</th>
+                      <th className="px-4 py-3 font-semibold">Guidance</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-200 bg-white">
+                    {(displayData.earningsTable ?? []).map((row) => (
+                      <tr key={`${row.quarter}-${row.revenue}`}>
+                        <td className="px-4 py-3 font-medium text-slate-900">{row.quarter}</td>
+                        <td className="px-4 py-3 text-slate-700">${row.revenue.toFixed(1)}B</td>
+                        <td className="px-4 py-3 text-slate-700">{row.eps.toFixed(2)}</td>
+                        <td className="px-4 py-3 text-slate-700">{row.guidance}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div>
+              <h2 className="text-2xl font-semibold text-slate-900 dark:text-slate-100">Latest Earnings Call</h2>
+              <div className="mt-4 rounded-[24px] border border-slate-200 bg-slate-50 p-5">
+                <p className="text-sm uppercase tracking-[0.35em] text-sky-500">Management summary</p>
+                <p className="mt-3 text-slate-700">{displayData.managementSummary ?? "Management commentary is currently being refreshed from the latest source feed."}</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="grid gap-6 md:grid-cols-2">
+          <div className={`rounded-[32px] p-6 transition ${cardClasses}`}>
+            <h2 className="text-2xl font-semibold text-slate-900 dark:text-slate-100">Share Count Trend</h2>
+            <div className="mt-4 overflow-hidden rounded-[24px] border border-slate-200">
+              <table className="min-w-full divide-y divide-slate-200 text-left text-sm">
+                <thead className="bg-slate-50 text-slate-600">
+                  <tr>
+                    <th className="px-4 py-3 font-semibold">Period</th>
+                    <th className="px-4 py-3 font-semibold">Shares (M)</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-200 bg-white">
+                  {(displayData.shareCountTrend ?? []).map((row) => (
+                    <tr key={row.period}>
+                      <td className="px-4 py-3 font-medium text-slate-900">{row.period}</td>
+                      <td className="px-4 py-3 text-slate-700">{row.value.toFixed(1)}M</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div className={`rounded-[32px] p-6 transition ${cardClasses}`}>
+            <h2 className="text-2xl font-semibold text-slate-900 dark:text-slate-100">CapEx Trend</h2>
+            <div className="mt-4 overflow-hidden rounded-[24px] border border-slate-200">
+              <table className="min-w-full divide-y divide-slate-200 text-left text-sm">
+                <thead className="bg-slate-50 text-slate-600">
+                  <tr>
+                    <th className="px-4 py-3 font-semibold">Period</th>
+                    <th className="px-4 py-3 font-semibold">CapEx (B)</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-200 bg-white">
+                  {(displayData.capexTrend ?? []).map((row) => (
+                    <tr key={row.period}>
+                      <td className="px-4 py-3 font-medium text-slate-900">{row.period}</td>
+                      <td className="px-4 py-3 text-slate-700">${row.value.toFixed(1)}B</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         </section>
       </div>

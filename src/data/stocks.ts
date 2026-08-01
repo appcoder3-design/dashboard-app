@@ -15,6 +15,18 @@ export interface FinancialMetrics {
   dates: string[];
 }
 
+export interface EarningsTableRow {
+  quarter: string;
+  revenue: number;
+  eps: number;
+  guidance: string;
+}
+
+export interface TrendTableRow {
+  period: string;
+  value: number;
+}
+
 export interface SymbolData {
   marketLabel: string;
   marketValue: number;
@@ -33,6 +45,10 @@ export interface SymbolData {
   };
   candles: CandlePoint[];
   metrics: FinancialMetrics;
+  earningsTable?: EarningsTableRow[];
+  shareCountTrend?: TrendTableRow[];
+  capexTrend?: TrendTableRow[];
+  managementSummary?: string;
 }
 
 export const dashboardData: Record<string, SymbolData> = {
@@ -240,6 +256,26 @@ export function buildFallbackData(symbol: string): SymbolData {
       eps: Array.from({ length: 5 }, (_, i) => Number((2 + i * 0.5 + (seed % 5)).toFixed(1))),
       dates: ["2021", "2022", "2023", "2024", "2025"],
     },
+    earningsTable: [
+      { quarter: "Q4 2025", revenue: 94.8, eps: 1.53, guidance: "Stable services mix" },
+      { quarter: "Q3 2025", revenue: 91.6, eps: 1.47, guidance: "Demand softened in hardware" },
+      { quarter: "Q2 2025", revenue: 89.4, eps: 1.42, guidance: "Cloud and software remain durable" },
+      { quarter: "Q1 2025", revenue: 87.1, eps: 1.36, guidance: "Operating margin expansion continues" },
+    ],
+    shareCountTrend: [
+      { period: "2022", value: 15.4 },
+      { period: "2023", value: 15.9 },
+      { period: "2024", value: 16.2 },
+      { period: "2025", value: 16.7 },
+    ],
+    capexTrend: [
+      { period: "2022", value: 12.4 },
+      { period: "2023", value: 13.6 },
+      { period: "2024", value: 14.2 },
+      { period: "2025", value: 15.1 },
+    ],
+    managementSummary:
+      "Management emphasized improving operating leverage, expanding recurring revenue, and maintaining disciplined capital deployment during the latest earnings call.",
   };
 }
 

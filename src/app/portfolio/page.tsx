@@ -8,7 +8,6 @@ const navItems = [
   { href: "/dashboard", label: "Dashboard" },
   { href: "/portfolio", label: "Portfolio" },
   { href: "/watchlist", label: "Watchlist" },
-  { href: "/about", label: "About" },
 ] as const;
 
 export default function PortfolioPage() {

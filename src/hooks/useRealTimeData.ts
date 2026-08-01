@@ -9,7 +9,6 @@ export function useRealTimeData(symbol: string) {
     return dashboardData[normalizedSymbol] ?? buildFallbackData(normalizedSymbol);
   });
 
-  // Update data when symbol changes
   useEffect(() => {
     if (prevSymbolRef.current !== normalizedSymbol) {
       prevSymbolRef.current = normalizedSymbol;
@@ -18,23 +17,35 @@ export function useRealTimeData(symbol: string) {
     }
   }, [normalizedSymbol]);
 
-  // Simulate real-time market updates
   useEffect(() => {
-    const interval = setInterval(() => {
-      setData((prevData) => {
-        const change = (Math.random() - 0.5) * 2;
-        const newValue = Math.max(0, prevData.marketValue + change);
-        const pctChange = ((newValue - prevData.marketValue) / prevData.marketValue) * 100;
-        return {
-          ...prevData,
-          marketValue: Number(newValue.toFixed(2)),
-          marketChange: `${change >= 0 ? "+" : ""}${change.toFixed(2)} (${pctChange >= 0 ? "+" : ""}${pctChange.toFixed(2)}%) today`,
-        };
-      });
-    }, 5000);
+    let isActive = true;
 
-    return () => clearInterval(interval);
-  }, []);
+    async function loadStockData() {
+      try {
+        const response = await fetch(`/api/stock?symbol=${encodeURIComponent(normalizedSymbol)}`);
+
+        if (!response.ok) {
+          throw new Error("Unable to load stock data");
+        }
+
+        const nextData = (await response.json()) as SymbolData;
+
+        if (isActive) {
+          setData(nextData);
+        }
+      } catch {
+        if (isActive) {
+          setData(dashboardData[normalizedSymbol] ?? buildFallbackData(normalizedSymbol));
+        }
+      }
+    }
+
+    loadStockData();
+
+    return () => {
+      isActive = false;
+    };
+  }, [normalizedSymbol]);
 
   return data;
 }
