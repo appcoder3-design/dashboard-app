@@ -3,6 +3,14 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 
+const navItems = [
+  { href: "/", label: "Home" },
+  { href: "/dashboard", label: "Dashboard" },
+  { href: "/portfolio", label: "Portfolio" },
+  { href: "/watchlist", label: "Watchlist" },
+  { href: "/about", label: "About" },
+] as const;
+
 export default function About() {
   const [isDarkMode, setIsDarkMode] = useState(() => {
     if (typeof window === "undefined") return false;
@@ -27,21 +35,32 @@ export default function About() {
 
   return (
     <div className={`min-h-screen px-4 py-8 transition-colors duration-300 ${pageClasses}`}>
-      <div className="mx-auto max-w-4xl flex flex-col gap-8">
+      <div className="mx-auto max-w-5xl flex flex-col gap-8">
         <div className={`rounded-[32px] p-6 shadow-2xl shadow-slate-950/20 backdrop-blur-xl transition ${cardClasses}`}>
           <div className="flex flex-col gap-6">
-            <div className="flex items-start justify-between">
+            <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
               <div className="flex-1">
                 <p className="text-sm uppercase tracking-[0.35em] text-sky-500/80">About</p>
                 <h1 className="mt-3 text-4xl font-semibold tracking-tight text-slate-900 dark:text-slate-100">About This Page</h1>
               </div>
-              <button
-                type="button"
-                onClick={() => setIsDarkMode((current) => !current)}
-                className="rounded-2xl border px-4 py-2 text-sm font-medium transition hover:border-sky-400 hover:bg-sky-500/10 dark:hover:border-cyan-400 whitespace-nowrap"
-              >
-                {isDarkMode ? "Light Mode" : "Dark Mode"}
-              </button>
+              <div className="flex flex-wrap gap-2">
+                {navItems.map((item) => (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className="rounded-2xl border border-slate-300 px-4 py-2 text-sm font-medium transition hover:border-sky-500 hover:bg-sky-500/10 dark:border-slate-700 dark:hover:border-cyan-400 dark:hover:bg-cyan-500/10"
+                  >
+                    {item.label}
+                  </Link>
+                ))}
+                <button
+                  type="button"
+                  onClick={() => setIsDarkMode((current) => !current)}
+                  className="rounded-2xl border px-4 py-2 text-sm font-medium transition hover:border-sky-400 hover:bg-sky-500/10 dark:hover:border-cyan-400 whitespace-nowrap"
+                >
+                  {isDarkMode ? "Light Mode" : "Dark Mode"}
+                </button>
+              </div>
             </div>
             <div>
               <p className="mt-0 max-w-3xl text-slate-600 dark:text-slate-400 leading-relaxed">
@@ -116,31 +135,6 @@ export default function About() {
                 </li>
               </ul>
             </div>
-          </div>
-        </div>
-
-        <div className={`rounded-[32px] p-6 transition ${cardClasses}`}>
-          <h2 className="text-2xl font-semibold text-slate-900 dark:text-slate-100">Navigation</h2>
-          <p className="mt-2 text-slate-600 dark:text-slate-400">Explore other sections of the dashboard:</p>
-          <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-            <Link
-              href="/"
-              className="rounded-2xl border border-slate-300 px-6 py-3 text-sm font-medium text-center transition hover:border-sky-500 hover:bg-sky-500/10 dark:border-slate-700 dark:hover:border-cyan-400 dark:hover:bg-cyan-500/10"
-            >
-              Back to Dashboard
-            </Link>
-            <Link
-              href="/portfolio"
-              className="rounded-2xl border border-slate-300 px-6 py-3 text-sm font-medium text-center transition hover:border-sky-500 hover:bg-sky-500/10 dark:border-slate-700 dark:hover:border-cyan-400 dark:hover:bg-cyan-500/10"
-            >
-              Portfolio
-            </Link>
-            <Link
-              href="/watchlist"
-              className="rounded-2xl border border-slate-300 px-6 py-3 text-sm font-medium text-center transition hover:border-sky-500 hover:bg-sky-500/10 dark:border-slate-700 dark:hover:border-cyan-400 dark:hover:bg-cyan-500/10"
-            >
-              Watchlist
-            </Link>
           </div>
         </div>
       </div>

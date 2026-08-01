@@ -1,43 +1,22 @@
 ﻿"use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
-import { useRealTimeData } from "../hooks/useRealTimeData";
-import { generatePeriodCandles, hashSymbol } from "../data/stocks";
-import PriceChart from "../components/PriceChart";
-import MetricsChart from "../components/MetricsChart";
-import CandlestickChart from "../components/CandlestickChart";
 
-const supportedSymbols = ["AAPL", "MSFT", "NVDA", "QQQ"];
-
-const periods = [
-  { id: "1D", label: "1D", points: 4 },
-  { id: "1W", label: "1W", points: 7 },
-  { id: "1M", label: "1M", points: 10 },
+const navItems = [
+  { href: "/", label: "Home" },
+  { href: "/dashboard", label: "Dashboard" },
+  { href: "/portfolio", label: "Portfolio" },
+  { href: "/watchlist", label: "Watchlist" },
+  { href: "/about", label: "About" },
 ] as const;
 
-type PeriodId = (typeof periods)[number]["id"];
-
-const numberFormat = new Intl.NumberFormat("en-US", {
-  minimumFractionDigits: 2,
-  maximumFractionDigits: 2,
-});
-
 export default function Home() {
-  const [symbolInput, setSymbolInput] = useState("AAPL");
   const [isDarkMode, setIsDarkMode] = useState(() => {
     if (typeof window === "undefined") return false;
     const savedTheme = window.localStorage.getItem("dashboard-theme");
     return savedTheme === "dark";
   });
-  const [selectedPeriod, setSelectedPeriod] = useState<PeriodId>("1W");
-  const [compoundStartingValue, setCompoundStartingValue] = useState(1000);
-  const [compoundGrowthRate, setCompoundGrowthRate] = useState(10);
-  const [compoundNumPeriods, setCompoundNumPeriods] = useState(10);
-
-  const normalizedSymbol = symbolInput.trim().toUpperCase() || "AAPL";
-  const data = useRealTimeData(normalizedSymbol);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -46,20 +25,7 @@ export default function Home() {
     window.localStorage.setItem("dashboard-theme", isDarkMode ? "dark" : "light");
   }, [isDarkMode]);
 
-  const pointsCount = periods.find((period) => period.id === selectedPeriod)?.points ?? 7;
-  const seed = hashSymbol(normalizedSymbol);
-  const periodCandles = useMemo(
-    () => generatePeriodCandles(data.candles, selectedPeriod, seed),
-    [data.candles, selectedPeriod, seed]
-  );
-  const visibleCandles = useMemo(() => periodCandles.slice(-pointsCount), [periodCandles, pointsCount]);
-
-  const displayData = {
-    ...data,
-    candles: visibleCandles,
-  };
-
-  const pageClasses = isDarkMode ? "bg-slate-950 text-slate-100" : "bg-slate-50 text-slate-slate-950";
+  const pageClasses = isDarkMode ? "bg-slate-950 text-slate-100" : "bg-slate-50 text-slate-950";
   const cardClasses = isDarkMode
     ? "border border-slate-800 bg-slate-900/90"
     : "border border-slate-200 bg-white/95";
@@ -69,44 +35,35 @@ export default function Home() {
 
   return (
     <div className={`min-h-screen px-4 py-8 transition-colors duration-300 ${pageClasses}`}>
-      <div className="mx-auto flex max-w-7xl flex-col gap-8">
-        <div className={`rounded-[32px] p-6 shadow-2xl shadow-slate-950/20 backdrop-blur-xl transition ${cardClasses}`}>
-          <div className="flex flex-col gap-8 lg:flex-row lg:items-start lg:justify-between">
-            <div className="flex flex-col gap-6 lg:flex-row lg:items-start gap-8 flex-1">
-              <div className="flex flex-col items-center gap-3">
-                <img
-                  src="/images/logo.png"
-                  alt="KALKI Business Logo"
-                  className="w-24 h-24 rounded-lg object-contain border-2 border-sky-500/50 dark:border-cyan-400/50"
-                />
-              </div>
-              <div className="flex-1">
-                <h1 className="mt-0 text-4xl font-semibold tracking-tight text-slate-900 dark:text-slate-100">KALKI BUSINESS VENTURES</h1>
-                <p className="mt-2 max-w-2xl text-slate-600 dark:text-slate-400">Track the latest stock performance, compare key metrics, and explore portfolio health in one polished view.</p>
+      <div className="mx-auto flex max-w-6xl flex-col gap-8">
+        <header className={`rounded-[32px] p-4 shadow-2xl shadow-slate-950/20 backdrop-blur-xl transition ${cardClasses}`}>
+          <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+            <div className="flex items-center gap-4">
+              <img
+                src="/images/logo.png"
+                alt="KALKI Business Logo"
+                className="h-14 w-14 rounded-lg object-contain border-2 border-sky-500/50 dark:border-cyan-400/50"
+              />
+              <div>
+                <p className="text-xs uppercase tracking-[0.35em] text-sky-500 dark:text-cyan-300">Kalki Business</p>
+                <h1 className="text-2xl font-semibold tracking-tight text-slate-900 dark:text-slate-100">Global Investment Hub</h1>
               </div>
             </div>
-            <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
-              <div className={`flex items-center gap-2 rounded-2xl px-4 py-2 text-sm transition ${softCardClasses}`}>
-                <span className="font-medium text-slate-600 dark:text-slate-300">Symbol</span>
-                <select
-                  value={normalizedSymbol}
-                  onChange={(event) => setSymbolInput(event.target.value)}
-                  aria-label="Select stock symbol"
-                  className="w-28 rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 outline-none transition focus:border-sky-500 focus:ring-1 focus:ring-sky-200 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:focus:border-cyan-400 dark:focus:ring-cyan-500/20"
+
+            <nav className="flex flex-wrap gap-2">
+              {navItems.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={`rounded-2xl border px-4 py-2 text-sm font-medium transition ${
+                    item.href === "/"
+                      ? "border-sky-500 bg-sky-500/10 text-sky-700 dark:border-cyan-400 dark:bg-cyan-500/10 dark:text-cyan-200"
+                      : "border-slate-300 hover:border-sky-500 hover:bg-sky-500/10 dark:border-slate-700 dark:hover:border-cyan-400 dark:hover:bg-cyan-500/10"
+                  }`}
                 >
-                  {supportedSymbols.map((symbol) => (
-                    <option key={symbol} value={symbol}>
-                      {symbol}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <Link
-                href="/about"
-                className="rounded-2xl border border-slate-300 px-4 py-2 text-sm font-medium transition hover:border-sky-500 hover:bg-sky-500/10 dark:border-slate-700 dark:hover:border-cyan-400 dark:hover:bg-cyan-500/10 text-center"
-              >
-                About This Page
-              </Link>
+                  {item.label}
+                </Link>
+              ))}
               <button
                 type="button"
                 onClick={() => setIsDarkMode((current) => !current)}
@@ -114,301 +71,88 @@ export default function Home() {
               >
                 {isDarkMode ? "Light Mode" : "Dark Mode"}
               </button>
-            </div>
+            </nav>
           </div>
+        </header>
 
-          <div className="mt-8 grid gap-4 lg:grid-cols-[1.1fr_0.9fr]">
-            <div className={`rounded-[28px] p-6 transition ${cardClasses}`}>
-              <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                <div>
-                  <p className="text-sm uppercase tracking-[0.35em] text-slate-500 dark:text-slate-400">{normalizedSymbol} overview</p>
-                  <p className="mt-2 text-5xl font-semibold text-sky-700 dark:text-cyan-300">${numberFormat.format(displayData.marketValue)}</p>
-                </div>
-                <span className={`rounded-3xl px-4 py-2 text-sm font-semibold ${displayData.marketChange.startsWith("+") ? "bg-emerald-500/10 text-emerald-300" : "bg-rose-500/10 text-rose-300"}`}>
-                  {displayData.marketChange}
-                </span>
-              </div>
-
-              <div className="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-                <div className={`rounded-3xl p-4 transition ${softCardClasses}`}>
-                  <p className="text-xs uppercase tracking-[0.28em] text-slate-500 dark:text-slate-400">Open</p>
-                  <p className="mt-2 text-xl font-semibold text-slate-900 dark:text-white">${numberFormat.format(displayData.open)}</p>
-                </div>
-                <div className={`rounded-3xl p-4 transition ${softCardClasses}`}>
-                  <p className="text-xs uppercase tracking-[0.28em] text-slate-500 dark:text-slate-400">High</p>
-                  <p className="mt-2 text-xl font-semibold text-sky-700 dark:text-cyan-300">${numberFormat.format(displayData.high)}</p>
-                </div>
-                <div className={`rounded-3xl p-4 transition ${softCardClasses}`}>
-                  <p className="text-xs uppercase tracking-[0.28em] text-slate-500 dark:text-slate-400">Low</p>
-                  <p className="mt-2 text-xl font-semibold text-slate-900 dark:text-white">${numberFormat.format(displayData.low)}</p>
-                </div>
-                <div className={`rounded-3xl p-4 transition ${softCardClasses}`}>
-                  <p className="text-xs uppercase tracking-[0.28em] text-slate-500 dark:text-slate-400">Volume</p>
-                  <p className="mt-2 text-xl font-semibold text-slate-900 dark:text-white">{displayData.volume}</p>
-                </div>
-              </div>
-            </div>
-
-            <div className={`rounded-[28px] p-6 transition ${cardClasses}`}>
-              <p className="text-sm uppercase tracking-[0.35em] text-slate-500 dark:text-slate-400">Trading pulse</p>
-              <div className={`mt-6 rounded-[28px] p-4 transition ${softCardClasses}`}>
-                <CandlestickChart candles={displayData.candles} isDarkMode={isDarkMode} />
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <section className={`rounded-[32px] p-6 transition ${cardClasses}`}>
-          <div className="flex items-center justify-between">
-            <div>
-              <h2 className="text-2xl font-semibold text-slate-900 dark:text-slate-100">Quick access</h2>
-              <p className="mt-2 text-slate-600 dark:text-slate-400">Navigate to your portfolio or watchlist.</p>
-            </div>
-            <div className="flex flex-col gap-2 sm:flex-row">
-              <Link
-                href="/portfolio"
-                className="rounded-2xl border border-slate-300 px-4 py-2 text-sm font-medium transition hover:border-sky-500 hover:bg-sky-500/10 dark:border-slate-700 dark:hover:border-cyan-400 dark:hover:bg-cyan-500/10"
-              >
-                Portfolio
-              </Link>
-              <Link
-                href="/watchlist"
-                className="rounded-2xl border border-slate-300 px-4 py-2 text-sm font-medium transition hover:border-sky-500 hover:bg-sky-500/10 dark:border-slate-700 dark:hover:border-cyan-400 dark:hover:bg-cyan-500/10"
-              >
-                Watchlist
-              </Link>
-              <Link
-                href="/about"
-                className="rounded-2xl border border-slate-300 px-4 py-2 text-sm font-medium transition hover:border-sky-500 hover:bg-sky-500/10 dark:border-slate-700 dark:hover:border-cyan-400 dark:hover:bg-cyan-500/10"
-              >
-                About This Page
-              </Link>
-            </div>
-          </div>
-        </section>
-
-        <div className="grid gap-6 xl:grid-cols-[1.4fr_0.95fr]">
-          <section className={`rounded-[32px] p-6 transition ${cardClasses}`}>
-            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-              <div>
-                <h2 className="text-2xl font-semibold text-slate-900 dark:text-slate-100">Market details</h2>
-                <p className="mt-2 text-slate-600 dark:text-slate-400">Analyze price action, earnings, and the latest market trends.</p>
-              </div>
-              <div className="flex flex-wrap gap-2">
-                {periods.map((period) => {
-                  const isActive = selectedPeriod === period.id;
-                  return (
-                    <button
-                      key={period.id}
-                      type="button"
-                      onClick={() => setSelectedPeriod(period.id)}
-                      className={`rounded-full border px-4 py-2 text-sm font-medium transition ${
-                        isActive
-                          ? "border-sky-500 bg-sky-500/10 text-sky-700 dark:text-cyan-200"
-                          : "border-slate-300 bg-slate-100 text-slate-700 hover:border-sky-500 hover:text-sky-700 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:hover:border-cyan-400 dark:hover:text-white"
-                      }`}
-                    >
-                      {period.label}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-
-            <div className={`mt-6 rounded-[28px] p-4 transition ${softCardClasses}`}>
-              <PriceChart data={displayData.candles} isDarkMode={isDarkMode} />
-            </div>
-
-            <div className="mt-6 grid gap-4 sm:grid-cols-2">
-              <article className={`rounded-3xl p-4 transition ${softCardClasses}`}>
-                <p className="text-xs uppercase tracking-[0.28em] text-slate-500 dark:text-slate-400">Estimated EPS</p>
-                <p className="mt-2 text-lg font-semibold text-slate-900 dark:text-white">{numberFormat.format(displayData.earnings.epsActual)} vs {numberFormat.format(displayData.earnings.epsEstimate)}</p>
-              </article>
-              <article className={`rounded-3xl p-4 transition ${softCardClasses}`}>
-                <p className="text-xs uppercase tracking-[0.28em] text-slate-500 dark:text-slate-400">Revenue</p>
-                <p className="mt-2 text-lg font-semibold text-slate-900 dark:text-white">${numberFormat.format(displayData.earnings.revenueActualB)}B</p>
-              </article>
-            </div>
-          </section>
-
-          <aside className="space-y-6">
-            <section className={`rounded-[32px] p-6 transition ${cardClasses}`}>
-              <h3 className="text-xl font-semibold text-slate-900 dark:text-slate-100">Earnings summary</h3>
-              <div className="mt-5 grid gap-4 sm:grid-cols-2">
-                <div className={`rounded-3xl p-4 transition ${softCardClasses}`}>
-                  <p className="text-xs uppercase tracking-[0.28em] text-slate-500 dark:text-slate-400">Quarter</p>
-                  <p className="mt-3 text-lg font-semibold text-slate-900 dark:text-white">{displayData.earnings.quarter}</p>
-                </div>
-                <div className={`rounded-3xl p-4 transition ${softCardClasses}`}>
-                  <p className="text-xs uppercase tracking-[0.28em] text-slate-500 dark:text-slate-400">Guidance</p>
-                  <p className="mt-3 text-lg font-semibold text-slate-900 dark:text-white">{displayData.earnings.guidance}</p>
-                </div>
-              </div>
-            </section>
-
-            <section className={`rounded-[32px] p-6 transition ${cardClasses}`}>
-              <h3 className="text-xl font-semibold text-slate-900 dark:text-slate-100">Portfolio pulse</h3>
-              <p className="mt-2 text-slate-600 dark:text-slate-400">Manage positions and watchlist items with quick access tabs.</p>
-              <div className={`mt-6 rounded-[28px] p-4 transition ${softCardClasses}`}>
-                <div className="space-y-3">
-                  <p className="text-xs uppercase tracking-[0.28em] text-slate-500 dark:text-slate-400">Market label</p>
-                  <p className="text-lg font-semibold text-slate-900 dark:text-white">{displayData.marketLabel}</p>
-                </div>
-                <div className="mt-4 space-y-3">
-                  <div className="flex items-center justify-between rounded-3xl p-4 transition border border-slate-200 bg-slate-50 dark:border-slate-800 dark:bg-slate-950/80">
-                    <span className="text-sm text-slate-500 dark:text-slate-400">Market change</span>
-                    <span className={`text-sm font-semibold ${displayData.marketChange.startsWith("+") ? "text-emerald-500" : "text-rose-500"}`}>{displayData.marketChange}</span>
-                  </div>
-                  <div className="flex items-center justify-between rounded-3xl p-4 transition border border-slate-200 bg-slate-50 dark:border-slate-800 dark:bg-slate-950/80">
-                    <span className="text-sm text-slate-500 dark:text-slate-400">Volume</span>
-                    <span className="text-sm font-semibold text-slate-900 dark:text-white">{displayData.volume}</span>
-                  </div>
-                </div>
-              </div>
-            </section>
-          </aside>
-        </div>
-
-        <section className={`rounded-[32px] p-6 transition ${cardClasses}`}>
-          <h2 className="text-2xl font-semibold text-slate-900 dark:text-slate-100">Financial metrics</h2>
-          <p className="mt-2 text-slate-600 dark:text-slate-400">Fundamental analytics for the selected stock and timeframe.</p>
-          <div className="mt-6 grid gap-4 md:grid-cols-2">
-            <MetricsChart metrics={displayData.metrics} type="pe" isDarkMode={isDarkMode} />
-            <MetricsChart metrics={displayData.metrics} type="roe" isDarkMode={isDarkMode} />
-            <MetricsChart metrics={displayData.metrics} type="debtToEquity" isDarkMode={isDarkMode} />
-            <MetricsChart metrics={displayData.metrics} type="revenue" isDarkMode={isDarkMode} />
-            <MetricsChart metrics={displayData.metrics} type="eps" isDarkMode={isDarkMode} />
-          </div>
-        </section>
-
-
-
-        <section className={`rounded-[32px] p-6 transition ${cardClasses}`}>
-          <h2 className="text-2xl font-semibold text-slate-900 dark:text-slate-100">Compound Interest Calculator</h2>
-          <p className="mt-2 text-slate-600 dark:text-slate-400">Calculate how your investment grows over time with compound interest.</p>
-          
-          <div className={`mt-6 rounded-[28px] p-4 transition ${softCardClasses}`}>
-            <div className="grid gap-4 sm:grid-cols-3">
-              <div className="flex flex-col">
-                <label htmlFor="starting-value" className="text-xs uppercase tracking-[0.28em] text-slate-600 dark:text-slate-400 font-semibold mb-2">
-                  Starting Value ($)
-                </label>
-                <input
-                  id="starting-value"
-                  type="number"
-                  value={compoundStartingValue}
-                  onChange={(e) => setCompoundStartingValue(Math.max(1, Number(e.target.value) || 0))}
-                  className="rounded-2xl border border-slate-300 bg-white px-4 py-2 text-slate-900 outline-none transition focus:border-sky-500 focus:ring-1 focus:ring-sky-200 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:focus:border-cyan-400 dark:focus:ring-cyan-500/20"
-                  min="1"
-                  step="100"
-                />
-              </div>
-              <div className="flex flex-col">
-                <label htmlFor="growth-rate" className="text-xs uppercase tracking-[0.28em] text-slate-600 dark:text-slate-400 font-semibold mb-2">
-                  Growth Rate (%)
-                </label>
-                <input
-                  id="growth-rate"
-                  type="number"
-                  value={compoundGrowthRate}
-                  onChange={(e) => setCompoundGrowthRate(Math.max(0, Number(e.target.value) || 0))}
-                  className="rounded-2xl border border-slate-300 bg-white px-4 py-2 text-slate-900 outline-none transition focus:border-sky-500 focus:ring-1 focus:ring-sky-200 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:focus:border-cyan-400 dark:focus:ring-cyan-500/20"
-                  min="0"
-                  step="0.5"
-                />
-              </div>
-              <div className="flex flex-col">
-                <label htmlFor="num-periods" className="text-xs uppercase tracking-[0.28em] text-slate-600 dark:text-slate-400 font-semibold mb-2">
-                  Number of Periods
-                </label>
-                <input
-                  id="num-periods"
-                  type="number"
-                  value={compoundNumPeriods}
-                  onChange={(e) => setCompoundNumPeriods(Math.max(1, Number(e.target.value) || 1))}
-                  className="rounded-2xl border border-slate-300 bg-white px-4 py-2 text-slate-900 outline-none transition focus:border-sky-500 focus:ring-1 focus:ring-sky-200 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:focus:border-cyan-400 dark:focus:ring-cyan-500/20"
-                  min="1"
-                  step="1"
-                />
-              </div>
-            </div>
-          </div>
-          
-          <div className="mt-8 grid gap-6 xl:grid-cols-[1fr_1.2fr]">
-            <div className={`rounded-[28px] p-4 transition ${softCardClasses}`}>
-              <div className="overflow-x-auto">
-                <table className="w-full">
-                  <thead>
-                    <tr className="border-b border-slate-300 dark:border-slate-700">
-                      <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700 dark:text-slate-300">Period</th>
-                      <th className="px-4 py-3 text-right text-sm font-semibold text-slate-700 dark:text-slate-300">Amount</th>
-                      <th className="px-4 py-3 text-right text-sm font-semibold text-slate-700 dark:text-slate-300">Growth</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {useMemo(() => {
-                      const compoundData = [];
-                      const principal = compoundStartingValue;
-                      const rate = compoundGrowthRate / 100;
-                      for (let i = 0; i <= compoundNumPeriods; i++) {
-                        const amount = principal * Math.pow(1 + rate, i);
-                        const growth = amount - principal;
-                        compoundData.push({ period: i, amount, growth });
-                      }
-                      return compoundData.map((row) => (
-                        <tr key={row.period} className="border-b border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition">
-                          <td className="px-4 py-3 text-sm font-medium text-slate-900 dark:text-slate-100">{row.period}</td>
-                          <td className="px-4 py-3 text-right text-sm font-semibold text-sky-700 dark:text-cyan-300">${numberFormat.format(row.amount)}</td>
-                          <td className="px-4 py-3 text-right text-sm font-semibold text-emerald-600 dark:text-emerald-400">+${numberFormat.format(row.growth)}</td>
-                        </tr>
-                      ));
-                    }, [compoundStartingValue, compoundGrowthRate, compoundNumPeriods])}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-
-            <div className={`rounded-[28px] p-4 transition ${softCardClasses}`}>
-              <ResponsiveContainer width="100%" height={300}>
-                <LineChart
-                  data={useMemo(() => {
-                    const data = [];
-                    const principal = compoundStartingValue;
-                    const rate = compoundGrowthRate / 100;
-                    for (let i = 0; i <= compoundNumPeriods; i++) {
-                      data.push({
-                        period: i,
-                        amount: principal * Math.pow(1 + rate, i),
-                      });
-                    }
-                    return data;
-                  }, [compoundStartingValue, compoundGrowthRate, compoundNumPeriods])}
-                  margin={{ top: 5, right: 30, left: 0, bottom: 5 }}
+        <section className={`overflow-hidden rounded-[32px] p-8 transition ${cardClasses}`}>
+          <div className="grid gap-8 lg:grid-cols-[1.15fr_0.85fr] lg:items-start">
+            <div className="rounded-[28px] bg-gradient-to-br from-sky-500/10 via-transparent to-cyan-500/10 p-6 dark:from-sky-500/10 dark:via-slate-950 dark:to-cyan-500/10">
+              <p className="text-sm uppercase tracking-[0.35em] text-sky-500 dark:text-cyan-300">About</p>
+              <h2 className="mt-3 text-4xl font-semibold tracking-tight text-slate-900 dark:text-slate-100">Kalki Business was created in Singapore as a private limited firm to trade on global stock exchanges and generate investment income.</h2>
+              <p className="mt-5 max-w-3xl text-lg leading-relaxed text-slate-600 dark:text-slate-400">
+                This landing page presents the company profile and gives visitors a clear path into the market dashboard, portfolio tools, and watchlist pages.
+              </p>
+              <div className="mt-6 flex flex-wrap gap-3">
+                <Link
+                  href="/dashboard"
+                  className="rounded-2xl bg-sky-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-sky-500 dark:bg-cyan-400 dark:text-slate-950 dark:hover:bg-cyan-300"
                 >
-                  <CartesianGrid strokeDasharray="3 3" stroke={isDarkMode ? "#334155" : "#e2e8f0"} />
-                  <XAxis dataKey="period" stroke={isDarkMode ? "#94a3b8" : "#64748b"} />
-                  <YAxis stroke={isDarkMode ? "#94a3b8" : "#64748b"} />
-                  <Tooltip
-                    contentStyle={{
-                      backgroundColor: isDarkMode ? "#1e293b" : "#f8fafc",
-                      border: `1px solid ${isDarkMode ? "#334155" : "#e2e8f0"}`,
-                      borderRadius: "12px",
-                    }}
-                    labelStyle={{ color: isDarkMode ? "#e2e8f0" : "#1e293b" }}
-                    formatter={(value) => `$${numberFormat.format(value as number)}`}
-                  />
-                  <Legend wrapperStyle={{ paddingTop: "20px" }} />
-                  <Line
-                    type="monotone"
-                    dataKey="amount"
-                    stroke={isDarkMode ? "#06b6d4" : "#0284c7"}
-                    dot={{ fill: isDarkMode ? "#06b6d4" : "#0284c7", r: 4 }}
-                    activeDot={{ r: 6 }}
-                    strokeWidth={2}
-                    name="Portfolio Value"
-                  />
-                </LineChart>
-              </ResponsiveContainer>
+                  Open Dashboard
+                </Link>
+                <Link
+                  href="/portfolio"
+                  className="rounded-2xl border border-slate-300 px-5 py-3 text-sm font-semibold transition hover:border-sky-500 hover:bg-sky-500/10 dark:border-slate-700 dark:hover:border-cyan-400 dark:hover:bg-cyan-500/10"
+                >
+                  View Portfolio
+                </Link>
+              </div>
+              <div className="mt-6 flex flex-wrap gap-2">
+                <span className="rounded-full border border-sky-500/40 bg-sky-500/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.28em] text-sky-700 dark:border-cyan-400/40 dark:bg-cyan-500/10 dark:text-cyan-200">Singapore</span>
+                <span className="rounded-full border border-sky-500/40 bg-sky-500/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.28em] text-sky-700 dark:border-cyan-400/40 dark:bg-cyan-500/10 dark:text-cyan-200">Global Markets</span>
+                <span className="rounded-full border border-sky-500/40 bg-sky-500/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.28em] text-sky-700 dark:border-cyan-400/40 dark:bg-cyan-500/10 dark:text-cyan-200">Investment Income</span>
+              </div>
+            </div>
+
+            <div className={`rounded-[28px] p-6 transition ${softCardClasses}`}>
+              <div className="flex items-center justify-between">
+                <h3 className="text-xl font-semibold text-slate-900 dark:text-slate-100">Company Snapshot</h3>
+                <span className="rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.28em] text-emerald-600 dark:text-emerald-300">Active</span>
+              </div>
+              <div className="mt-5 grid gap-4 sm:grid-cols-2">
+                <div className="rounded-3xl border border-slate-200 bg-white/80 p-4 dark:border-slate-700 dark:bg-slate-950/70">
+                  <p className="text-xs uppercase tracking-[0.28em] text-slate-500 dark:text-slate-400">Entity</p>
+                  <p className="mt-2 text-lg font-semibold text-slate-900 dark:text-slate-100">Private Limited</p>
+                </div>
+                <div className="rounded-3xl border border-slate-200 bg-white/80 p-4 dark:border-slate-700 dark:bg-slate-950/70">
+                  <p className="text-xs uppercase tracking-[0.28em] text-slate-500 dark:text-slate-400">Base</p>
+                  <p className="mt-2 text-lg font-semibold text-slate-900 dark:text-slate-100">Singapore</p>
+                </div>
+              </div>
+              <ul className="mt-5 space-y-3 text-slate-600 dark:text-slate-400">
+                <li className="flex items-start gap-3">
+                  <span className="mt-1 text-sky-500 dark:text-cyan-300">•</span>
+                  <span>Global stock exchange trading activity</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="mt-1 text-sky-500 dark:text-cyan-300">•</span>
+                  <span>Portfolio visibility across every major page</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="mt-1 text-sky-500 dark:text-cyan-300">•</span>
+                  <span>Income-oriented investing through disciplined market analysis</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section className={`rounded-[32px] p-6 transition ${cardClasses}`}>
+          <div className="grid gap-6 md:grid-cols-3">
+            <div className={`rounded-[28px] p-5 transition ${softCardClasses}`}>
+              <div className="mb-4 inline-flex rounded-2xl bg-sky-500/10 px-3 py-2 text-sky-700 dark:bg-cyan-500/10 dark:text-cyan-200">📊</div>
+              <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100">Dashboard</h3>
+              <p className="mt-2 text-slate-600 dark:text-slate-400">See live market information, symbol performance, and charts in a dedicated analytics page.</p>
+            </div>
+            <div className={`rounded-[28px] p-5 transition ${softCardClasses}`}>
+              <div className="mb-4 inline-flex rounded-2xl bg-sky-500/10 px-3 py-2 text-sky-700 dark:bg-cyan-500/10 dark:text-cyan-200">💼</div>
+              <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100">Portfolio</h3>
+              <p className="mt-2 text-slate-600 dark:text-slate-400">Manage investment holdings and track positions across your portfolio.</p>
+            </div>
+            <div className={`rounded-[28px] p-5 transition ${softCardClasses}`}>
+              <div className="mb-4 inline-flex rounded-2xl bg-sky-500/10 px-3 py-2 text-sky-700 dark:bg-cyan-500/10 dark:text-cyan-200">⭐</div>
+              <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100">Watchlist</h3>
+              <p className="mt-2 text-slate-600 dark:text-slate-400">Follow symbols of interest and keep a focused shortlist for review.</p>
             </div>
           </div>
         </section>

@@ -23,6 +23,14 @@ const numberFormat = new Intl.NumberFormat("en-US", {
   maximumFractionDigits: 2,
 });
 
+const navItems = [
+  { href: "/", label: "Home" },
+  { href: "/dashboard", label: "Dashboard" },
+  { href: "/portfolio", label: "Portfolio" },
+  { href: "/watchlist", label: "Watchlist" },
+  { href: "/about", label: "About" },
+] as const;
+
 export default function Dashboard() {
   const [symbolInput, setSymbolInput] = useState("AAPL");
   const [isDarkMode, setIsDarkMode] = useState(() => {
@@ -67,48 +75,29 @@ export default function Dashboard() {
     <div className={`min-h-screen px-4 py-8 transition-colors duration-300 ${pageClasses}`}>
       <div className="mx-auto flex max-w-7xl flex-col gap-8">
         <div className={`rounded-[32px] p-6 shadow-2xl shadow-slate-950/20 backdrop-blur-xl transition ${cardClasses}`}>
-          <div className="flex flex-col gap-8 lg:flex-row lg:items-start lg:justify-between">
-            <div className="flex flex-col gap-6 lg:flex-row lg:items-start gap-8 flex-1">
-              <div className="flex flex-col items-center gap-3">
-                <img
-                  src="/images/logo.png"
-                  alt="KALKI Business Logo"
-                  className="w-24 h-24 rounded-lg object-contain border-2 border-sky-500/50 dark:border-cyan-400/50"
-                />
-              </div>
-              <div className="flex-1">
-                <h1 className="mt-0 text-4xl font-semibold tracking-tight text-slate-900 dark:text-slate-100">KALKI BUSINESS VENTURES</h1>
-                <p className="mt-2 max-w-2xl text-slate-600 dark:text-slate-400">Track the latest stock performance, compare key metrics, and explore portfolio health in one polished view.</p>
+          <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+            <div className="flex items-center gap-4">
+              <img
+                src="/images/logo.png"
+                alt="KALKI Business Logo"
+                className="h-14 w-14 rounded-lg object-contain border-2 border-sky-500/50 dark:border-cyan-400/50"
+              />
+              <div>
+                <p className="text-xs uppercase tracking-[0.35em] text-sky-500 dark:text-cyan-300">Kalki Business</p>
+                <h1 className="text-2xl font-semibold tracking-tight text-slate-900 dark:text-slate-100">Market Dashboard</h1>
               </div>
             </div>
-            <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
-              <div className={`flex items-center gap-2 rounded-2xl px-4 py-2 text-sm transition ${softCardClasses}`}>
-                <span className="font-medium text-slate-600 dark:text-slate-300">Symbol</span>
-                <select
-                  value={normalizedSymbol}
-                  onChange={(event) => setSymbolInput(event.target.value)}
-                  aria-label="Select stock symbol"
-                  className="w-28 rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 outline-none transition focus:border-sky-500 focus:ring-1 focus:ring-sky-200 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:focus:border-cyan-400 dark:focus:ring-cyan-500/20"
+
+            <nav className="flex flex-wrap gap-2">
+              {navItems.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className="rounded-2xl border border-slate-300 px-4 py-2 text-sm font-medium transition hover:border-sky-500 hover:bg-sky-500/10 dark:border-slate-700 dark:hover:border-cyan-400 dark:hover:bg-cyan-500/10"
                 >
-                  {supportedSymbols.map((symbol) => (
-                    <option key={symbol} value={symbol}>
-                      {symbol}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <Link
-                href="/"
-                className="rounded-2xl border border-slate-300 px-4 py-2 text-sm font-medium transition hover:border-sky-500 hover:bg-sky-500/10 dark:border-slate-700 dark:hover:border-cyan-400 dark:hover:bg-cyan-500/10 text-center"
-              >
-                Home
-              </Link>
-              <Link
-                href="/calculator"
-                className="rounded-2xl border border-slate-300 px-4 py-2 text-sm font-medium transition hover:border-sky-500 hover:bg-sky-500/10 dark:border-slate-700 dark:hover:border-cyan-400 dark:hover:bg-cyan-500/10 text-center"
-              >
-                Calculator
-              </Link>
+                  {item.label}
+                </Link>
+              ))}
               <button
                 type="button"
                 onClick={() => setIsDarkMode((current) => !current)}
@@ -116,7 +105,7 @@ export default function Dashboard() {
               >
                 {isDarkMode ? "Light Mode" : "Dark Mode"}
               </button>
-            </div>
+            </nav>
           </div>
 
           <div className="mt-8 grid gap-4 lg:grid-cols-[1.1fr_0.9fr]">
