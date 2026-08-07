@@ -23,7 +23,7 @@ export default function Home() {
               <img
                 src="/images/logo.png"
                 alt="KALKI Business Logo"
-                className="h-40 w-40 rounded-xl object-contain border-2 border-sky-500/50 dark:border-cyan-400/50"
+                className="h-20 w-35 rounded-xl object-contain border-2 border-sky-500/50 dark:border-cyan-400/50"
               />
               <div>
                 <p className="text-lg uppercase tracking-[1.55em] font-bold tracking-tight text-sky-500 dark:text-cyan-300">Private Investment Company</p>
