@@ -26,8 +26,8 @@ export default function Home() {
                 className="h-20 w-20 rounded-xl object-contain border-2 border-sky-500/50 dark:border-cyan-400/50"
               />
               <div>
-                <p className="text-xs uppercase tracking-[0.35em] text-sky-500 dark:text-cyan-300">Kalki Business</p>
-                <h1 className="text-[1.55rem] font-semibold tracking-tight text-slate-900 dark:text-slate-100">Global Investment Hub</h1>
+                <p className="text-xs uppercase tracking-[0.55em] text-sky-500 dark:text-cyan-300">Kalki Business</p>
+                <h1 className="text-[1.35rem] font-semibold tracking-tight text-slate-900 dark:text-slate-100">Private Investment Company</h1>
               </div>
             </div>
 
@@ -57,7 +57,7 @@ export default function Home() {
                 style={{
                   backgroundImage:
                     "url('https://photostorage.explorest.com/asia/Singapore/yik-keat-lee-marina-east-view-of_marina-bay-sands-singapore-flyer-and-singapore-skyline-compressed.jpg')",
-                  backgroundPosition: "center center",
+                  backgroundPosition: "top center",
                 }}
               />
             </div>
@@ -102,7 +102,7 @@ export default function Home() {
             <div className={`rounded-[28px] p-5 transition ${softCardClasses}`}>
               <div className="mb-4 inline-flex rounded-2xl bg-sky-500/10 px-3 py-2 text-sky-700 dark:bg-cyan-500/10 dark:text-cyan-200">💼</div>
               <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100">Portfolio</h3>
-              <p className="mt-2 text-slate-600 dark:text-slate-400">Manage investment holdings and track positions across your portfolio.</p>
+              <p className="mt-2 text-slate-600 dark:text-slate-400">Manage own private investment holdings across our portfolio.</p>
             </div>
             <div className={`rounded-[28px] p-5 transition ${softCardClasses}`}>
               <div className="mb-4 inline-flex rounded-2xl bg-sky-500/10 px-3 py-2 text-sky-700 dark:bg-cyan-500/10 dark:text-cyan-200">⭐</div>
