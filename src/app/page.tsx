@@ -23,11 +23,11 @@ export default function Home() {
               <img
                 src="/images/logo.png"
                 alt="KALKI Business Logo"
-                className="h-20 w-20 rounded-xl object-contain border-2 border-sky-500/50 dark:border-cyan-400/50"
+                className="h-80 w-80 rounded-xl object-contain border-2 border-sky-500/50 dark:border-cyan-400/50"
               />
               <div>
-                <p className="text-xs uppercase tracking-[0.55em] text-sky-500 dark:text-cyan-300">Kalki Business</p>
-                <h1 className="text-[1.35rem] font-semibold tracking-tight text-slate-900 dark:text-slate-100">Private Investment Company</h1>
+                <p className="text-lg uppercase tracking-[1.55em] font-bold tracking-tight text-sky-500 dark:text-cyan-300">Kalki Business VEntures</p>
+                <h1 className="text-[0.5rem] font-semibold tracking-tight text-slate-900 dark:text-slate-100">Private Investment Company</h1>
               </div>
             </div>
 
