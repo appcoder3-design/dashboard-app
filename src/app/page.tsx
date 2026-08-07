@@ -57,7 +57,7 @@ export default function Home() {
                 style={{
                   backgroundImage:
                     "url('https://photostorage.explorest.com/asia/Singapore/yik-keat-lee-marina-east-view-of_marina-bay-sands-singapore-flyer-and-singapore-skyline-compressed.jpg')",
-                  backgroundPosition: "top center",
+                  backgroundPosition: "center center",
                 }}
               />
             </div>
