@@ -56,7 +56,7 @@ export default function Home() {
                 className="h-[420px] w-full bg-cover bg-center"
                 style={{
                   backgroundImage:
-                    "url('https://photostorage.explorest.com/asia/Singapore/yik-keat-lee-marina-east-view-of_marina-bay-sands-singapore-flyer-and-singapore-skyline-compressed.jpg')",
+                    "url('https://media.timeout.com/images/106053638/1920/1440/image.webp')",
                   backgroundPosition: "center center",
                 }}
               />
