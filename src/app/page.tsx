@@ -57,7 +57,7 @@ export default function Home() {
                 style={{
                   backgroundImage:
                     "url('https://media.timeout.com/images/106053638/1920/1440/image.webp')",
-                  backgroundPosition: "center center",
+                  backgroundPosition: "bottom center",
                 }}
               />
             </div>
