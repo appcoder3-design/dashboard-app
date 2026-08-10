@@ -26,7 +26,7 @@ export default function Home() {
                 className="h-20 w-35 rounded-xl object-contain border-2 border-sky-500/50 dark:border-cyan-400/50"
               />
               <div>
-                <p className="text-lg uppercase tracking-[1.55em] font-bold tracking-tight text-sky-500 dark:text-cyan-300">Private Wholesale Trading and Investment Company</p>
+                <p className="text-lg uppercase tracking-[1.55em] font-bold tracking-tight text-sky-500 dark:text-cyan-300">Wholesale Trading and Investment Company</p>
               </div>
             </div>
 
