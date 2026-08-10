@@ -26,7 +26,7 @@ export default function Home() {
                 className="h-20 w-35 rounded-xl object-contain border-2 border-sky-500/50 dark:border-cyan-400/50"
               />
               <div>
-                <p className="text-lg uppercase tracking-[1.55em] font-bold tracking-tight text-sky-500 dark:text-cyan-300">Private Investment Company</p>
+                <p className="text-lg uppercase tracking-[1.55em] font-bold tracking-tight text-sky-500 dark:text-cyan-300">Private Wholesale Trading and Investment Company</p>
               </div>
             </div>
 
@@ -63,7 +63,7 @@ export default function Home() {
 
             <div className="rounded-[28px] bg-slate-50 p-6">
               <h2 className="text-[1.65rem] font-medium leading-tight tracking-tight text-slate-900">
-                Kalki Business was created in Singapore as a private limited firm to trade on global stock exchanges and generate investment income.
+                Kalki Business is a Singaporean private company in the wholesale Indian origin ethnic fashion wear business and to source investment income by trading on global stock exchanges.
               </h2>
               <p className="mt-4 max-w-3xl text-sm leading-relaxed text-slate-600">
                 This landing page presents the company profile and gives visitors a clear path into the market dashboard, portfolio tools, and watchlist pages.
