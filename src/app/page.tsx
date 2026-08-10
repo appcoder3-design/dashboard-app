@@ -63,10 +63,10 @@ export default function Home() {
 
             <div className="rounded-[28px] bg-slate-50 p-6">
               <h2 className="text-[1.65rem] font-medium leading-tight tracking-tight text-slate-900">
-                Kalki Business is a Singaporean private company in the wholesale Indian origin ethnic fashion wear business and to source investment income by trading on global stock exchanges.
+                Kalki Business is a private company in the wholesale Indian origin ethnic fashion wear business. Kalki also sources investment income by trading on global stock exchanges.
               </h2>
               <p className="mt-4 max-w-3xl text-sm leading-relaxed text-slate-600">
-                This landing page presents the company profile and gives visitors a clear path into the market dashboard, portfolio tools, and watchlist pages.
+                This landing page shows company profile and showcases major business lines for the company.
               </p>
               <div className="mt-6 flex flex-wrap gap-3">
                 <Link
