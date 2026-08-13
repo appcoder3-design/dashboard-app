@@ -6,16 +6,16 @@ export default function Footer() {
           <div>
             <h3 className="text-lg font-semibold text-white mb-4">KALKI BUSINESS VENTURES</h3>
             <p className="text-sm text-slate-400">
-              A modern platform for active investors to monitor, analyze, and manage positions with confidence.
+              A platform for partners to monitor trending Indian origin products with confidence.
             </p>
           </div>
           <div>
             <h4 className="text-md font-semibold text-white mb-4">Features</h4>
             <ul className="space-y-3 text-sm text-slate-400">
-              <li>Live price action and charts</li>
-              <li>Portfolio performance tracking</li>
+              <li>Live prices and charts</li>
+              <li>New Product launches</li>
               <li>Watchlist alerts and management</li>
-              <li>Deep financial metrics</li>
+              <li>Deep product metrics</li>
             </ul>
           </div>
           <div>
@@ -28,7 +28,7 @@ export default function Footer() {
           </div>
         </div>
         <div className="mt-10 border-t border-slate-800 pt-6 text-center text-sm text-slate-500">
-          <p>&copy; 2026 Stock Dashboard. All rights reserved.</p>
+          <p>&copy; 2026 Kalki Business Ventures. All rights reserved.</p>
         </div>
       </div>
     </footer>
