@@ -26,7 +26,7 @@ export default function Home() {
                 className="h-20 w-35 rounded-xl object-contain border-2 border-sky-500/50 dark:border-cyan-400/50"
               />
               <div>
-                <p className="text-lg uppercase tracking-[1.55em] font-bold tracking-tight text-sky-500 dark:text-cyan-300">Wholesale Trading and Investment Company</p>
+                <p className="text-lg uppercase tracking-[1.55em] font-bold tracking-tight text-sky-500 dark:text-cyan-300">Wholesale Trading Company</p>
               </div>
             </div>
 
@@ -63,7 +63,7 @@ export default function Home() {
 
             <div className="rounded-[28px] bg-slate-50 p-6">
               <h2 className="text-[1.65rem] font-medium leading-tight tracking-tight text-slate-900">
-                Kalki Business is a private company in the wholesale Indian origin ethnic fashion wear business. Kalki also sources investment income by trading on global stock exchanges.
+                Kalki Business is a private company in sourcing and wholesaling of Indian origin ethnic fashion wear business. Kalki also sources selected unique Indian food items for supply to retailers in Singapore.
               </h2>
               <p className="mt-4 max-w-3xl text-sm leading-relaxed text-slate-600">
                 This landing page shows company profile and showcases major business lines for the company.
@@ -73,7 +73,7 @@ export default function Home() {
                   href="/dashboard"
                   className="rounded-2xl bg-sky-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-sky-500"
                 >
-                  Open Dashboard
+                  Open Product list
                 </Link>
                 <Link
                   href="/portfolio"
@@ -84,8 +84,8 @@ export default function Home() {
               </div>
               <div className="mt-6 flex flex-wrap gap-2">
                 <span className="rounded-full border border-sky-500/40 bg-sky-500/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.28em] text-sky-700">Singapore</span>
-                <span className="rounded-full border border-sky-500/40 bg-sky-500/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.28em] text-sky-700">Global Markets</span>
-                <span className="rounded-full border border-sky-500/40 bg-sky-500/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.28em] text-sky-700">Investment Income</span>
+                <span className="rounded-full border border-sky-500/40 bg-sky-500/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.28em] text-sky-700">India</span>
+                <span className="rounded-full border border-sky-500/40 bg-sky-500/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.28em] text-sky-700">Unique Products</span>
               </div>
             </div>
           </div>
@@ -96,17 +96,17 @@ export default function Home() {
             <div className={`rounded-[28px] p-5 transition ${softCardClasses}`}>
               <div className="mb-4 inline-flex rounded-2xl bg-sky-500/10 px-3 py-2 text-sky-700 dark:bg-cyan-500/10 dark:text-cyan-200">📊</div>
               <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100">Dashboard</h3>
-              <p className="mt-2 text-slate-600 dark:text-slate-400">See live market information, symbol performance, and charts in a dedicated analytics page.</p>
+              <p className="mt-2 text-slate-600 dark:text-slate-400">See product information and best selling products on a dedicated analytics page.</p>
             </div>
             <div className={`rounded-[28px] p-5 transition ${softCardClasses}`}>
               <div className="mb-4 inline-flex rounded-2xl bg-sky-500/10 px-3 py-2 text-sky-700 dark:bg-cyan-500/10 dark:text-cyan-200">💼</div>
               <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100">Portfolio</h3>
-              <p className="mt-2 text-slate-600 dark:text-slate-400">Manage own private investment holdings across our portfolio.</p>
+              <p className="mt-2 text-slate-600 dark:text-slate-400">View our product range on offer.</p>
             </div>
             <div className={`rounded-[28px] p-5 transition ${softCardClasses}`}>
               <div className="mb-4 inline-flex rounded-2xl bg-sky-500/10 px-3 py-2 text-sky-700 dark:bg-cyan-500/10 dark:text-cyan-200">⭐</div>
               <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100">Watchlist</h3>
-              <p className="mt-2 text-slate-600 dark:text-slate-400">Follow symbols of interest and keep a focused shortlist for review.</p>
+              <p className="mt-2 text-slate-600 dark:text-slate-400">Follow products of interest and share a watchlist for review.</p>
             </div>
           </div>
         </section>
