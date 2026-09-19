@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "KALKI BUSINESS VENTURES - Financial Dashboard",
-  description: "Professional financial dashboard with real-time stock data, portfolio tracking, and investment analytics.",
+  title: "KALKI BUSINESS VENTURES",
+  description: "Singapore based wholesale traders",
 };
 
 export default function RootLayout({
